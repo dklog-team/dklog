@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default-layout}"
+>
+<th:block layout:fragment="content">
+    <p th:text="${testDto.id}"></p>
+    <p th:text="${testDto.testColumn1}"></p>
+    <p th:text="${testDto.testColumn2}"></p>
+</th:block>
+</html>

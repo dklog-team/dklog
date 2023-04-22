@@ -1,0 +1,25 @@
+server:
+  port: 8084
+spring:
+  devtools:
+    livereload:
+      enabled: true
+  config:
+    location: currentdir/config
+  pid:
+    file: application.pid
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  profiles:
+    include: oauth
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
+
+mybatis:
+  type-aliases-package: kr.dklog.dto
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/**/*.xml
