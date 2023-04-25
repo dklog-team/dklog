@@ -1,0 +1,20 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="header-fragment" class="bg-white shadow-md py-0.5">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between py-4" aria-label="Global">
+        <div class="flex lg:flex-1 justify-between">
+            <a href="/" class="">
+                <span class="font-semibold text-2xl align-middle bg-secondary rounded-md p-1">dk</span>
+                <span class="text-2xl align-middle">log</span>
+            </a>
+            <div th:if="${session.member == null}" class="flex justify-center items-center gap-x-4">
+                <a th:href="@{/login}" class="btn btn-secondary btn-sm">로그인</a>
+                <a th:href="@{/phone/auth}" id="signUpBtn" class="btn text-white btn-sm">회원가입</a>
+            </div>
+            <div th:if="${session.member != null}" class="flex justify-center items-center gap-x-4">
+                <a id="logoutBtn" class="btn btn-secondary btn-sm" th:href="@{/logout}">로그아웃</a>
+            </div>
+        </div>
+    </nav>
+    <script th:inline="javascript"></script>
+</header>
+</html>
