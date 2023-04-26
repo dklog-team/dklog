@@ -5,6 +5,17 @@
       layout:decorate="~{layouts/default-layout}"
 >
 <th:block layout:fragment="content">
+    <main>
 
+    </main>
+    <script>
+        let html = document.getElementsByTagName('html')[0];
+        let body = document.getElementsByTagName('body')[0];
+        let main = document.getElementsByTagName('main')[0];
+
+        html.style.height = '100%';
+        body.style.height = '100%';
+        main.classList.add('main-h-full');
+    </script>
 </th:block>
 </html>
