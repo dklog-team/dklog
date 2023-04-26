@@ -1,3 +1,31 @@
 .main-h-full {
     height: calc(100% - 69px - 239px);
 }
+
+.content-h-full {
+    height: calc(100% - 33px - 50px);
+}
+
+/* 스크롤바 넓이 */
+.scrollbar::-webkit-scrollbar {
+    width: 7px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(0, 0, 0); /* 스크롤바 색상 */
+    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);  /*스크롤바 뒷 배경 색상*/
+    border-radius: 10px; /* 스크롤바 둥근 테두리 */
+}
+
+/* 스크롤바 위 아래 공간 여백 */
+.scrollbar::-webkit-scrollbar-button:vertical:start:decrement,
+.scrollbar::-webkit-scrollbar-button:vertical:start:increment,
+.scrollbar::-webkit-scrollbar-button:vertical:end:decrement,
+.scrollbar::-webkit-scrollbar-button:vertical:end:increment {
+    display: block;
+    height: 3px;
+}

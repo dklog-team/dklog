@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/write-layout}"
+>
+<th:block layout:fragment="content">
+    <main>
+        <form method="get" action="../.." class="h-full w-full overflow-hidden">
+            <div id="title" class="h-8 w-full border-b-2">
+                <input type="text" name="title" placeholder="제목" class="input focus:outline-none h-7 w-full ml-1 mr-2 my-0.5 p-2" />
+            </div>
+            <div id="contentContainer" class="flex flex-row justify-between content-h-full w-screen">
+                <textarea id="content" name="content" class="scrollbar textarea rounded-xl textarea-primary resize-none basis-1/2 focus:outline-none h-full ml-1 mr-2 my-1 p-3" placeholder="본문"></textarea>
+                <textarea id="preview" name="preview" class="scrollbar textarea rounded-xl textarea-primary resize-none basis-1/2 focus:outline-none h-full ml-1 mr-2 my-1 p-3" placeholder="미리보기" readonly></textarea>
+            </div>
+            <div id="btnContainer" class="flex flex-row justify-end border-t-2 h-8 mt-2">
+                <button type="reset" class="btn btn-sm bg-black text-white border-none my-1 mx-1">취소</button>
+                <button type="submit" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none my-1 mx-1 mr-2">저장</button>
+            </div>
+        </form>
+    </main>
+    <script>
+        const html = document.getElementsByTagName("html")[0];
+        const body = document.getElementsByTagName("body")[0];
+        const main = document.getElementsByTagName("main")[0];
+
+        html.style.height = "100%";
+        body.style.height = "100%";
+        main.style.height = "100%";
+
+
+        let content = document.getElementById("contentContainer");
+        content.classList.add("content-h-full");
+    </script>
+</th:block>
+</html>
