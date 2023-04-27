@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default-layout}">
+
+<th:block layout:fragment="content">
+    <main class="mx-auto max-w-6xl mt-6">
+        <form class="justify-center items-center">
+            <div class="mb-4 border border-gray-200 rounded-lg bg-gray-50">
+                <div class="px-4 py-2 bg-white rounded-t-lg">
+                    <textarea id="comment" rows="4" class="resize-none w-full px-0 text-gray-900 bg-white outline-none" placeholder="댓글을 작성해주세요." required></textarea>
+                </div>
+                <div class="flex items-center justify-end px-3 py-2">
+                    <button class="btn btn-secondary btn-sm text-xs text-center">
+                        댓글 작성
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+    <script>
+        let html = document.getElementsByTagName('html')[0];
+        let body = document.getElementsByTagName('body')[0];
+        let main = document.getElementsByTagName('main')[0];
+
+        html.style.height = '100%';
+        body.style.height = '100%';
+        main.classList.add('main-h-full');
+    </script>
+</th:block>
+</html>
