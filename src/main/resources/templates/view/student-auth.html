@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default-layout}"
+>
+<th:block layout:fragment="content">
+    <main class="mx-auto max-w-6xl py-10 flex items-center">
+        <div class="card w-max max-w-lg shadow-xl mx-auto border border-gray-300">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <h3 class="text-4xl align-middle mb-2">
+                        <span class="font-semibold">dk</span>
+                        <span>techin</span>
+                    </h3>
+                    <p class="text-lg text-gray-500">교육생 인증</p>
+                </div>
+                <div class="form-control">
+                    <label class="label" for="name">
+                        <span class="label-text">이름</span>
+                    </label>
+                    <div class="flex justify-start">
+                        <input id="name" type="text" placeholder="홍길동"
+                               class="input input-bordered w-full"/>
+                    </div>
+                    <label class="label" for="phoneNumber">
+                        <span class="label-text">휴대폰 번호</span>
+                    </label>
+                    <div class="flex justify-start items-center gap-x-4">
+                        <input id="phoneNumber" type="text" placeholder="01012345678"
+                               class="input input-bordered"/>
+                        <button id="getAuthCodeBtn" class="btn btn-secondary">인증번호 받기</button>
+                    </div>
+                    <div id="authCodeForm" class="form-control hidden">
+                        <label class="label" for="phoneAuthCode">
+                            <span class="label-text">인증번호</span>
+                        </label>
+                        <input id="phoneAuthCode" type="text" placeholder="인증번호 6자리 입력"
+                               class="input input-bordered"/>
+                        <button id="submitAuthCodeBtn" class="btn text-white mt-4">확인</button>
+                    </div>
+                    <input id="isAuthPhoneNumber" type="hidden" value="false"/>
+                    <input id="studentId" type="hidden"/>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        let html = document.getElementsByTagName('html')[0];
+        let body = document.getElementsByTagName('body')[0];
+        let main = document.getElementsByTagName('main')[0];
+
+        html.style.height = '100%';
+        body.style.height = '100%';
+        main.classList.add('main-h-full');
+
+        const getAuthCode = async () => {
+            const authCodeForm = document.getElementById('authCodeForm')
+            authCodeForm.classList.remove('hidden')
+
+            const isAuthPhoneNumber = document.getElementById('isAuthPhoneNumber')
+            isAuthPhoneNumber.value = true
+        }
+
+        const submitAuthCode = async () => {
+            alert('인증 완료\n로그인 해주세요')
+            location.href = '/'
+        }
+
+        // 인증번호 받기 버튼
+        const getAuthCodeBtn = document.getElementById('getAuthCodeBtn')
+        getAuthCodeBtn.addEventListener('click', getAuthCode)
+
+        // 확인 버튼
+        const submitAuthCodeBtn = document.getElementById('submitAuthCodeBtn')
+        submitAuthCodeBtn.addEventListener('click', submitAuthCode)
+    </script>
+</th:block>
+</html>

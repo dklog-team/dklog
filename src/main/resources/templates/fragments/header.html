@@ -1,15 +1,49 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <header th:fragment="header-fragment" class="bg-white shadow-md py-0.5">
-    <nav class="mx-auto flex max-w-6xl items-center justify-between py-4" aria-label="Global">
-        <div class="flex lg:flex-1 justify-between">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between py-4 min-[320px]:p-4" aria-label="Global">
+        <div class="flex">
+            <!-- logo -->
             <a href="/" class="">
-<!--                <span class="font-semibold text-2xl align-middle bg-secondary rounded-md p-1">dk</span>-->
+                <!--                <span class="font-semibold text-2xl align-middle bg-secondary rounded-md p-1">dk</span>-->
                 <span class="font-semibold text-2xl align-middle">dk</span>
                 <span class="text-2xl align-middle">log</span>
             </a>
+        </div>
+        <!-- sign in, sign up, logout -->
+        <div>
             <div th:if="${session.member == null}" class="flex justify-center items-center gap-x-4">
-                <a th:href="@{/login}" class="btn btn-secondary btn-sm">로그인</a>
-                <a th:href="@{/phone/auth}" id="signUpBtn" class="btn text-white btn-sm">회원가입</a>
+                <!-- sign in -->
+                <label for="signIn" class="btn btn-secondary btn-sm">로그인</label>
+                <input type="checkbox" id="signIn" class="modal-toggle"/>
+                <!-- sign in modal -->
+                <div id="signInModal" class="modal">
+                    <div class="modal-box w-auto">
+                        <label for="signIn" class="btn btn-ghost btn-sm btn-circle absolute right-2 top-2">✕</label>
+                        <div class="text-center">
+                            <div class="text-4xl align-middle py-10">
+                                <span class="font-semibold">dk</span>
+                                <span>log</span>
+                            </div>
+                            <p class="text-gray-600">dktechin 교육생 인증 후에</p>
+                            <p class="text-gray-600">소셜 로그인으로 서비스를 이용하실 수 있습니다.</p>
+                            <div class="my-10">
+                                <a th:href="@{/oauth2/authorization/github}"
+                                   class="w-full btn bg-black text-white items-middle gap-x-5 text-lg font-medium normal-case">
+                                    <img class="w-8" th:src="@{/images/github-mark-white.png}"/>
+                                    <span>Sign in with GitHub</span>
+                                </a>
+                            </div>
+                            <div class="mb-10">
+                                <span class="text-gray-600 mr-2">dktechin 교육생이신가요?</span>
+                                <a id="goToAuth"
+                                   class="underline decoration-yellow-400 text-yellow-400 cursor-pointer hover:text-yellow-500"
+                                   th:href="@{/student/auth}">교육생 인증하러 가기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- sign up -->
+                <a th:href="@{/student/auth}" id="signUpBtn" class="btn text-white btn-sm">교육생 인증</a>
             </div>
             <div th:if="${session.member != null}" class="flex justify-center items-center gap-x-4">
                 <a id="logoutBtn" class="btn btn-secondary btn-sm" th:href="@{/logout}">로그아웃</a>
