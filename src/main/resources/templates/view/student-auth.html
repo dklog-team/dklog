@@ -32,10 +32,10 @@
                         <button id="getAuthCodeBtn" class="btn btn-secondary">인증번호 받기</button>
                     </div>
                     <div id="authCodeForm" class="form-control hidden">
-                        <label class="label" for="phoneAuthCode">
+                        <label class="label" for="authCode">
                             <span class="label-text">인증번호</span>
                         </label>
-                        <input id="phoneAuthCode" type="text" placeholder="인증번호 6자리 입력"
+                        <input id="authCode" type="text" placeholder="인증번호 6자리 입력"
                                class="input input-bordered"/>
                         <button id="submitAuthCodeBtn" class="btn text-white mt-4">확인</button>
                     </div>
@@ -45,35 +45,59 @@
             </div>
         </div>
     </main>
+    <script type="text/javascript" th:src="@{/js/common/main-h-full.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/core/request.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/student.js}"></script>
     <script>
-        let html = document.getElementsByTagName('html')[0];
-        let body = document.getElementsByTagName('body')[0];
-        let main = document.getElementsByTagName('main')[0];
+        const clickAuthCodeBtn = async () => {
+            const phoneNumber = document.getElementById('phoneNumber').value
+            const name = document.getElementById('name').value
+            const requestData = {
+                name,
+                phoneNumber
+            }
+            const response = await getAuthCode(requestData)
+            console.log(response)
+            alert(response.data.message)
 
-        html.style.height = '100%';
-        body.style.height = '100%';
-        main.classList.add('main-h-full');
-
-        const getAuthCode = async () => {
             const authCodeForm = document.getElementById('authCodeForm')
             authCodeForm.classList.remove('hidden')
 
             const isAuthPhoneNumber = document.getElementById('isAuthPhoneNumber')
             isAuthPhoneNumber.value = true
+
+            const studentId = document.getElementById('studentId')
+            studentId.value = response.data.studentId
         }
 
-        const submitAuthCode = async () => {
-            alert('인증 완료\n로그인 해주세요')
+        const clickSubmitAuthCodeBtn = async () => {
+            const isAuthPhoneNumber = document.getElementById('isAuthPhoneNumber')
+            if (isAuthPhoneNumber.value === 'false') {
+                alert('유효하지 않은 휴대폰 번호입니다.')
+                return;
+            }
+            const authCode = document.getElementById('authCode').value
+            const studentId = document.getElementById('studentId').value
+
+            const requestData = {
+                studentId,
+                authCode
+            }
+            console.log(requestData)
+            let response = await submit(requestData);
+            if (response.status === 200) {
+                alert('인증 완료. 로그인 후에 서비스를 이용해보세요!');
+            }
             location.href = '/'
         }
 
         // 인증번호 받기 버튼
         const getAuthCodeBtn = document.getElementById('getAuthCodeBtn')
-        getAuthCodeBtn.addEventListener('click', getAuthCode)
+        getAuthCodeBtn.addEventListener('click', clickAuthCodeBtn)
 
         // 확인 버튼
         const submitAuthCodeBtn = document.getElementById('submitAuthCodeBtn')
-        submitAuthCodeBtn.addEventListener('click', submitAuthCode)
+        submitAuthCodeBtn.addEventListener('click', clickSubmitAuthCodeBtn)
     </script>
 </th:block>
 </html>
