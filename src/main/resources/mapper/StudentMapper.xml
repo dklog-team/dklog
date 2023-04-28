@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.StudentMapper">
+
+    <select id="findById" parameterType="Long" resultType="kr.dklog.dto.StudentDto">
+        select student_id, name, phone_number, semester, auth_code, github_username
+        from student
+        where student_id = #{studentId}
+    </select>
+
+    <select id="findByName" parameterType="String" resultType="kr.dklog.dto.StudentDto">
+        select student_id, name, phone_number, semester, auth_code, github_username
+        from student
+        where name = #{name}
+    </select>
+
+    <select id="findByPhoneNumber" parameterType="String" resultType="kr.dklog.dto.StudentDto">
+        select student_id, name, phone_number, semester, auth_code, github_username
+        from student
+        where phone_number = #{phoneNumber}
+    </select>
+
+    <select id="updateStudent" parameterType="kr.dklog.dto.StudentDto">
+        update student
+        set name = #{name},
+            phone_number = #{phoneNumber},
+            semester = #{semester},
+            auth_code = #{authCode},
+            github_username = #{githubUsername}
+        where student_id = #{studentId}
+    </select>
+
+</mapper>
