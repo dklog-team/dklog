@@ -21,7 +21,13 @@
         where phone_number = #{phoneNumber}
     </select>
 
-    <select id="updateStudent" parameterType="kr.dklog.dto.StudentDto">
+    <select id="findByGithubUsername" parameterType="String" resultType="kr.dklog.dto.StudentDto">
+        select student_id, name, phone_number, semester, auth_code, github_username
+        from student
+        where github_username = #{githubUsername}
+    </select>
+
+    <update id="updateStudent" parameterType="kr.dklog.dto.StudentDto">
         update student
         set name = #{name},
             phone_number = #{phoneNumber},
@@ -29,6 +35,6 @@
             auth_code = #{authCode},
             github_username = #{githubUsername}
         where student_id = #{studentId}
-    </select>
+    </update>
 
 </mapper>
