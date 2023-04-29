@@ -10,12 +10,15 @@ import java.io.Serializable;
 public class SessionMember implements Serializable {
 
     private Long studentId;
+
     private Long memberId;
 
     private String githubUsername;
+
     private String email;
-    private String name;
+
     private String picture;
+
     private String username;
 
     public SessionMember(StudentDto studentDto, MemberDto memberDto) {
