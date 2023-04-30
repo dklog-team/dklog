@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.ImageMapper">
+
+
+    <insert id="insertImage"  parameterType="kr.dklog.dto.ImageDto">
+        insert into image(upload_name, location, store_name, file_type,post_id)
+        values (#{uploadName}, #{location}, #{storeName}, #{fileType}, #{post_id})
+    </insert>
+
+
+
+</mapper>
