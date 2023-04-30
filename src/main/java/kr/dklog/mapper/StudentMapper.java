@@ -15,4 +15,6 @@ public interface StudentMapper {
     Optional<StudentDto> findByPhoneNumber(String phoneNumber);
 
     Long updateStudent(StudentDto studentDto);
+
+    Optional<StudentDto> findByGithubUsername(String githubUsername);
 }
