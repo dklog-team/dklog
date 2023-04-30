@@ -27,6 +27,6 @@ public class SessionMember implements Serializable {
         this.githubUsername = memberDto.getGithubUsername();
         this.email = memberDto.getEmail();
         this.picture = memberDto.getPicture();
-        this.username = studentDto.getSemester() + "기_" + studentDto.getName();
+        this.username = memberDto.getUsername();
     }
 }

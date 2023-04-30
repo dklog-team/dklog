@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.PostMapper">
+
+    <select id="findAll" resultType="kr.dklog.dto.PostDto">
+        select post_id,
+               title,
+               content_md,
+               content_html,
+               created_date,
+               modified_date,
+               m.member_id,
+               username,
+               picture
+        from post p
+        join member m on p.member_id = m.member_id
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="kr.dklog.dto.PostDto">
+        select post_id, title, content_md, content_html, created_date, modified_date, member_id
+        from post
+        where post_id = #{postId}
+    </select>
+
+</mapper>
