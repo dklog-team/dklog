@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/write-layout}"
+>
+<th:block layout:fragment="content">
+    <main>
+        <form method="get" action="../.." class="h-full w-full overflow-hidden">
+            <div id="title" class="h-8 w-full">
+                <input type="text" name="title" placeholder="제목" class="input focus:outline-none h-7 w-full ml-1 mr-2 my-0.5 p-2" />
+            </div>
+            <div id="contentContainer" class="flex flex-row content-h-full w-full text-left">
+                <textarea id="content" name="content" onkeyup="printPreview()" class="textarea text-base border-yellow-400 rounded-none resize-none w-1/2 focus:outline-none h-full my-1 p-3"></textarea>
+                <div id="previewScroll" class="overflow-x-hidden text-left overflow-auto border border-1 border-yellow-400 rounded-none resize-none basis-1/2 focus:outline-none h-full my-1 p-3">
+                    <div id="previewContent" class="prose" style="padding: 0; overflow: hidden; margin: 0;"></div>
+                </div>
+            </div>
+            <div id="btnContainer" class="flex flex-row justify-between h-8 mt-2">
+                <div class="w-1/6 text-left">
+                    <img th:src="@{/images/image-upload-icon.png}" class="mt-2 ml-2 hover:cursor-pointer hover:opacity-80">
+                </div>
+                <div class="w-3/6"></div>
+                <div class="w-2/6 text-right">
+                    <button type="reset" onclick="deletePreview()" class="btn btn-sm bg-black text-white border-none my-1 mx-1">취소</button>
+                    <button type="submit" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none my-1 mx-1 mr-2">저장</button>
+                </div>
+            </div>
+        </form>
+    </main>
+    <script>
+        const html = document.getElementsByTagName('html')[0];
+        const body = document.getElementsByTagName('body')[0];
+        const main = document.getElementsByTagName('main')[0];
+
+        html.style.height = '100%';
+        body.style.height = '100%';
+        body.style.textAlign = 'center';
+        main.style.height = '100%';
+
+        let contentContainer = document.getElementById('contentContainer');
+        contentContainer.classList.add('content-h-full');
+
+        let content = document.getElementById('content');
+        let previewContent = document.getElementById('previewContent');
+        let previewScroll = document.getElementById('previewScroll');
+
+        const md = window.markdownit();
+
+        /* markdown it option 설정 */
+        let defaults = {
+            html: false,
+            xhtmlOut: false,
+            breaks: false,
+            langPrefix: 'language-',
+            linkify: true,
+            typographer: true,
+            _highlight: true,
+            _strict: false,
+            _view: 'html',
+        };
+
+        /* option 중 highlight 적용 설정 */
+        defaults.highlight = function (str, lang) {
+            let esc = md.utils.escapeHtml;
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    let highlight = hljs.highlight(lang, str, true)
+                    return '<pre class="hljs"><code>' + highlight.value + '</code></pre>';
+                } catch (__){ }
+            }else {
+                return '<pre class="hljs"><code>' + esc(str) + '</code></pre>';
+            }
+        };
+
+        md.set(defaults);
+
+        /* markdown it plugins */
+        const emoji = window.markdownitEmoji;
+        const mark = window.markdownitMark;
+        const footnote = window.markdownitFootnote;
+        const sub = window.markdownitSub;
+        const sup = window.markdownitSup;
+        const ins = window.markdownitIns;
+        const defList = window.markdownitDeflist;
+        const abbr = window.markdownitAbbr;
+
+        md.use(emoji);
+        md.use(mark);
+        md.use(footnote);
+        md.use(sub);
+        md.use(sup);
+        md.use(ins);
+        md.use(defList);
+        md.use(abbr);
+
+        /* 미리보기 영역에 렌더링하여 출력 */
+        function printPreview() {
+            const contentValue = content.value;
+            previewContent.innerHTML = md.render(contentValue);
+        }
+
+        function deletePreview() {
+            previewContent.innerHTML = '';
+        }
+
+        window.GV = {
+            sync1: null,
+            sync2: null
+        }
+
+        /* 본문 작성 영역 스크롤 event : preview 영역 함께 이동 */
+        content.addEventListener('scroll', function (){
+            if(GV.sync1 && GV.sync1.id != this.id){
+                return false;
+            }
+            let contentScrollHeight = content.scrollHeight - content.clientHeight;
+            let previewScrollHeight = previewScroll.scrollHeight - previewScroll.clientHeight;
+
+            let contentScrollTop = this.scrollTop;
+            let previewScrollTop = contentScrollTop / contentScrollHeight * previewScrollHeight;
+            previewScroll.scrollTop = previewScrollTop;
+
+            GV.sync1 = this;
+            if(GV.sync2){
+                clearTimeout(GV.sync2);
+            }
+            GV.sync2 = setTimeout(function () {
+                GV.sync1 = null;
+                GV.sync2 = null;
+            }, 500);
+        })
+
+        /* preview 영역 스크롤 event : 본문 영역 함께 이동 */
+        previewScroll.addEventListener('scroll', function (){
+            if(GV.sync1 && GV.sync1.id != this.id){
+                return false;
+            }
+            let contentScrollHeight = content.scrollHeight - content.clientHeight;
+            let previewScrollHeight = previewScroll.scrollHeight - previewScroll.clientHeight;
+
+            let previewScrollTop = this.scrollTop;
+            let contentScrollTop = previewScrollTop / previewScrollHeight * contentScrollHeight;
+            content.scrollTop = contentScrollTop;
+
+            GV.sync1 = this;
+            if(GV.sync2){
+                clearTimeout(GV.sync2);
+            }
+            GV.sync2 = setTimeout(function () {
+                GV.sync1 = null;
+                GV.sync2 = null;
+            }, 500);
+        })
+
+        onload = function () {
+            if (content.value === null) {
+                printPreview();
+            }
+        };
+
+    </script>
+</th:block>
+</html>
