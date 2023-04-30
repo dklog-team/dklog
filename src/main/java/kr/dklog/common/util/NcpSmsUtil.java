@@ -48,8 +48,6 @@ public class NcpSmsUtil {
                         .build()))
                 .build();
 
-        System.out.println(requestSmsDto.toString());
-
         Map<String, Object> response = send(requestSmsDto, new Timestamp(System.currentTimeMillis()).getTime());
         return response;
     }
