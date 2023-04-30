@@ -1,7 +1,12 @@
 .main-h-full {
     height: calc(100% - 69px - 239px);
 }
-
 .content-h-full {
     height: calc(100% - 33px - 50px);
+}
+.content-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }

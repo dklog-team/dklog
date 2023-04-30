@@ -4,18 +4,18 @@
 <mapper namespace="kr.dklog.mapper.MemberMapper">
 
     <insert id="save" useGeneratedKeys="true" keyColumn="member_id" keyProperty="memberId" parameterType="kr.dklog.dto.MemberDto">
-        insert into member(member_id, github_username, email, picture, student_id)
-        values (null, #{githubUsername}, #{email}, #{picture}, #{studentId})
+        insert into member(member_id, github_username, username, email, picture, student_id)
+        values (null, #{githubUsername}, #{username}, #{email}, #{picture}, #{studentId})
     </insert>
 
     <select id="findById" parameterType="Long" resultType="kr.dklog.dto.MemberDto">
-        select member_id, github_username, email, picture, role, student_id
+        select member_id, github_username, username, email, picture, role, student_id
         from member
         where student_id = #{memberId}
     </select>
 
     <select id="findByGithubUsername" parameterType="String" resultType="kr.dklog.dto.MemberDto">
-        select member_id, github_username, email, picture, role, member_id
+        select member_id, github_username, username, email, picture, role, member_id
         from member
         where github_username = #{githubUsername}
     </select>
@@ -23,6 +23,7 @@
     <update id="updateMember" parameterType="kr.dklog.dto.MemberDto">
         update member
         set github_username = #{githubUsername},
+            username = #{username},
             email = #{email},
             picture = #{picture},
             role = #{role},

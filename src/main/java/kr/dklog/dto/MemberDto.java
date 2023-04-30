@@ -12,6 +12,8 @@ public class MemberDto {
 
     private String githubUsername;
 
+    private String username;
+
     private String email;
 
     private String picture;
@@ -21,9 +23,10 @@ public class MemberDto {
     private Long studentId;
 
     @Builder
-    public MemberDto(Long memberId, String githubUsername, String email, String picture, Role role, Long studentId) {
+    public MemberDto(Long memberId, String githubUsername, String username, String email, String picture, Role role, Long studentId) {
         this.memberId = memberId;
         this.githubUsername = githubUsername;
+        this.username = username;
         this.email = email;
         this.picture = picture;
         this.role = role;
