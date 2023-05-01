@@ -3,12 +3,9 @@
 
 <mapper namespace="kr.dklog.mapper.ImageMapper">
 
-
-    <insert id="insertImage"  parameterType="kr.dklog.dto.ImageDto">
+    <insert id="save"  parameterType="kr.dklog.dto.ImageDto">
         insert into image(upload_name, location, store_name, file_type,post_id)
-        values (#{uploadName}, #{location}, #{storeName}, #{fileType}, #{post_id})
+        values (#{uploadName}, #{location}, #{storeName}, #{fileType}, 1)
     </insert>
-
-
 
 </mapper>

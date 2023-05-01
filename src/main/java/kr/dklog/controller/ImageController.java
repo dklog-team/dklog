@@ -1,23 +1,28 @@
 package kr.dklog.controller;
 
-import kr.dklog.dto.ImageDto;
-import kr.dklog.service.ImageService;
+import kr.dklog.dto.request.RequestUploadImageDto;
+import kr.dklog.dto.response.ResponseUploadResultDto;
+import kr.dklog.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequiredArgsConstructor
 public class ImageController {
 
+    private final FileUploadService fileUploadService;
 
+    @PostMapping("/image/upload")
+    @ResponseBody
+    public ResponseEntity<?> upload(@ModelAttribute RequestUploadImageDto requestDto){
 
-    @GetMapping("/uploadView")
-    public String UploadView(){
-        return "uploadView";
+        ResponseUploadResultDto responseDto = fileUploadService.uploadImage(requestDto);
+
+        return ResponseEntity.ok().body(responseDto);
+
     }
 }
-

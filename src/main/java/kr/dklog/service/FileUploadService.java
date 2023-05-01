@@ -1,9 +1,12 @@
 package kr.dklog.service;
 
-
-import kr.dklog.dto.ImageDto;
+import kr.dklog.dto.request.RequestUploadImageDto;
+import kr.dklog.dto.response.ResponseUploadResultDto;
 import kr.dklog.mapper.ImageMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,17 +16,25 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService {
+public class FileUploadService {
+
+    @Value("${image.upload-path}")
+    private String imageUploadPath;
 
     private final ImageMapper imageMapper;
 
-    public String insertImage(ImageDto imageDto) {
+    public ResponseUploadResultDto uploadImage(RequestUploadImageDto requestDto) {
 
-        MultipartFile image = imageDto.getImage();
+        System.out.println("imageUploadPath: " + imageUploadPath);
 
-        String path = new File("c:/images/").getAbsolutePath();
+        MultipartFile image = requestDto.getImage();
 
-        String imgExtension = "";
+        String path = new File(imageUploadPath).getAbsolutePath();
+
+        ResponseUploadResultDto responseDto = new ResponseUploadResultDto();
+
+        String imgExtension = null;
+
         if (!image.isEmpty()) {
             switch (image.getContentType()) {
                 case "image/jpg":
@@ -41,18 +52,20 @@ public class ImageService {
                 default:
                     throw new IllegalArgumentException("허용되지 않은 파일 형식입니다.");
             }
-            imageDto.setFileType(imgExtension);
+            System.out.println("imageUploadPath: " + imageUploadPath);
+            responseDto.setFileType(imgExtension);
+            System.out.println("imageUploadPath: " + imageUploadPath);
         }
 
         String newImgName = UUID.randomUUID().toString();
 
-        imageDto.setUploadName(image.getOriginalFilename());
-        imageDto.setStoreName(newImgName);
-        imageDto.setLocation(path);
+        responseDto.setUploadName(image.getOriginalFilename());
+        responseDto.setStoreName(newImgName);
+        responseDto.setLocation(path);
 
-        imageMapper.insertImage(imageDto);
+        imageMapper.save(responseDto);
 
-        File file = new File(imageDto.getLocation() + "/" + imageDto.getStoreName() + imageDto.getFileType());
+        File file = new File(responseDto.getLocation() + "/" + responseDto.getStoreName() + responseDto.getFileType());
 
         if (!file.exists()) {
             file.mkdirs();
@@ -68,7 +81,7 @@ public class ImageService {
             e.printStackTrace();
         }
 
-        return imageDto.getLocation() + "/" + imageDto.getStoreName() + imageDto.getFileType();
+        return responseDto;
     }
 
 }

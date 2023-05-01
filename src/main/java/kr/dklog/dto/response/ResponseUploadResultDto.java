@@ -1,16 +1,15 @@
-package kr.dklog.dto;
+package kr.dklog.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ImageDto {
-
-    private MultipartFile image;
+@AllArgsConstructor
+public class ResponseUploadResultDto {
 
     private long imageId;
 
