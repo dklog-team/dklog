@@ -5,28 +5,60 @@
       layout:decorate="~{layouts/default-layout}">
 
 <th:block layout:fragment="content">
-    <main class="mx-auto max-w-6xl mt-6">
-        <form class="justify-center items-center">
-            <div class="mb-4 border border-gray-200 rounded-lg bg-gray-50">
-                <div class="px-4 py-2 bg-white rounded-t-lg">
-                    <textarea id="comment" rows="4" class="resize-none w-full px-0 text-gray-900 bg-white outline-none" placeholder="댓글을 작성해주세요." required></textarea>
-                </div>
-                <div class="flex items-center justify-end px-3 py-2">
-                    <button class="btn btn-secondary btn-sm text-xs text-center">
-                        댓글 작성
-                    </button>
-                </div>
+    <main class="mx-auto max-w-6xl py-6">
+        <div class="mb-4 border border-gray-200 rounded-lg bg-gray-50">
+            <div class="px-4 py-2 bg-white rounded-t-lg">
+                <textarea id="writeComment" rows="4" class="resize-none w-full px-0 text-gray-900 bg-white outline-none"
+                          placeholder="댓글을 작성해주세요." required></textarea>
             </div>
-        </form>
+            <div class="flex items-center justify-end px-3 py-2">
+                <button id="saveComment" class="btn btn-secondary btn-sm text-xs text-center">
+                    댓글 작성
+                </button>
+            </div>
+        </div>
+        <ul id="commentlistbox" role="list" class="divide-y divide-gray-100">
+            <li class="gap-x-6 py-5" th:each="comment : ${commentList}">
+                <div class="w-10/12 gap-x-4">
+                    <div class="min-w-0">
+                        <div class="whitespace-pre-wrap mt-1 truncate text-xs leading-5 text-gray-500"
+                             th:text="${comment.content}"></div>
+                    </div>
+                </div>
+                <div class="hidden sm:flex sm:flex-col sm:items-end">
+                    <!--포스트 아이디가 아니라 나중에 작성자 이름 받아서 수정하기-->
+                    <p class="text-sm leading-6 text-gray-900" th:text="${comment.postId}"></p>
+                    <!--시간을 그대로 나타낼지 아니면 몇 시간전 이런거로 할지  -->
+                    <p class="mt-1 text-xs leading-5 text-gray-500" th:text="${comment.createdDate}"></p>
+                </div>
+            </li>
+        </ul>
+
     </main>
     <script>
-        let html = document.getElementsByTagName('html')[0];
-        let body = document.getElementsByTagName('body')[0];
-        let main = document.getElementsByTagName('main')[0];
-
-        html.style.height = '100%';
-        body.style.height = '100%';
-        main.classList.add('main-h-full');
+        const postId = [[${postId}]]
+        const saveBtn = document.getElementById('saveComment');
+        saveBtn.addEventListener('click', function () {
+            const content = document.getElementById("writeComment").value;
+            if(content.trim() != null && content.trim() != ''){
+                const sendParam = {
+                    content,
+                    postId
+                }
+                axios.post('/insertComment', sendParam)
+                    .then(function (response) {
+                        console.log(response)
+                        const tbody = document.getElementById("commentlistbox")
+                        const html = "<li class='flex justify-between gap-x-6 py-5'><div class=\"flex gap-x-4\">" +
+                            "<div class=\"min-w-0 flex-auto\"><p class=\"mt-1 truncate text-xs leading-5 text-gray-500\">" + response.data.content + "</p></div></div>" +
+                            "<div class=\"hidden sm:flex sm:flex-col sm:items-end\"><p class=\"text-sm leading-6 text-gray-900\">" + response.data.postId + "</p>" +
+                            "<p class=\"mt-1 text-xs leading-5 text-gray-500\">" + response.data.createdDate + "</p></div></li>"
+                        tbody.innerHTML += html;
+                    })
+            }else{
+                alert("댓글을 작성해주세요");
+            }
+        })
     </script>
 </th:block>
 </html>
