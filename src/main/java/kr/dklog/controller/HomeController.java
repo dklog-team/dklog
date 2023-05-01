@@ -25,8 +25,6 @@ public class HomeController {
             model.addAttribute("member", sessionMember);
         }
 
-        log.info("page: {}", requestListDto.getPage());
-        log.info("pageSize: {}", requestListDto.getPageSize());
         ResponsePostListDto responsePostListDto = postService.getList(requestListDto);
         model.addAttribute("responsePostListDto", responsePostListDto);
 
