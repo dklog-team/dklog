@@ -22,7 +22,8 @@ public class ImageController {
 
         ResponseUploadResultDto responseDto = fileUploadService.uploadImage(requestDto);
 
-        return ResponseEntity.ok().body(responseDto);
+        responseDto.setMdName(responseDto.getLocation() + responseDto.getStoreName() + responseDto.getFileType());
 
+        return ResponseEntity.ok().body(responseDto);
     }
 }
