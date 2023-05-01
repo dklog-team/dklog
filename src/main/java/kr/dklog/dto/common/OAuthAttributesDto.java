@@ -42,10 +42,10 @@ public class OAuthAttributesDto {
                 .build();
     }
 
-    public MemberDto toMemberDto(Long studentId, String name) {
+    public MemberDto toMemberDto(Long studentId, Integer semester, String name) {
         return MemberDto.builder()
                 .githubUsername(githubUsername)
-                .username(studentId + "기_" + name)
+                .username(semester + "기_" + name)
                 .email(email)
                 .picture(picture)
                 .role(Role.USER)

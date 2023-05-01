@@ -11,7 +11,7 @@
     <select id="findById" parameterType="Long" resultType="kr.dklog.dto.MemberDto">
         select member_id, github_username, username, email, picture, role, student_id
         from member
-        where student_id = #{memberId}
+        where member_id = #{memberId}
     </select>
 
     <select id="findByGithubUsername" parameterType="String" resultType="kr.dklog.dto.MemberDto">
