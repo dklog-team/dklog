@@ -1,6 +1,8 @@
 package kr.dklog.service;
 
+import kr.dklog.common.util.PagingUtil;
 import kr.dklog.dto.PostDto;
+import kr.dklog.dto.common.RequestListDto;
 import kr.dklog.dto.response.PreviewPostDto;
 import kr.dklog.dto.response.ResponsePostListDto;
 import kr.dklog.mapper.PostMapper;
@@ -27,10 +29,17 @@ public class PostService {
         return postDto;
     }
 
-    public ResponsePostListDto getList() {
-        List<PostDto> postDtoList = postMapper.findAll();
+    public ResponsePostListDto getList(RequestListDto requestListDto) {
+        List<PostDto> postDtoList = postMapper.findAll(requestListDto);
+        Long totalCount = postMapper.countBy();
+
+        int totalPages = (int) (totalCount % requestListDto.getPageSize() == 0 ?
+                        totalCount / requestListDto.getPageSize() : totalCount / requestListDto.getPageSize() + 1);
+
+        PagingUtil pagingUtil = new PagingUtil(totalCount, totalPages, requestListDto.getPage(), requestListDto.getPageSize());
 
         ResponsePostListDto responsePostListDto = new ResponsePostListDto();
+        responsePostListDto.setPagingUtil(pagingUtil);
         List<PreviewPostDto> previewPostDtoList = postDtoList.stream().map((postDto -> {
             // getPreviewContent
             String contentHtml = postDto.getContentHtml();
