@@ -1,5 +1,10 @@
 package kr.dklog.controller;
 
+import kr.dklog.common.session.LoginMember;
+import kr.dklog.common.session.SessionMember;
+import kr.dklog.dto.request.RequestPostDto;
+import kr.dklog.service.PostService;
+import lombok.RequiredArgsConstructor;
 import kr.dklog.dto.response.ResponsePostDto;
 import kr.dklog.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +24,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/write")
-    public String getPostWrite() {
+    public String postWritePage() {
         return "view/write";
     }
 
@@ -30,5 +35,20 @@ public class PostController {
         model.addAttribute("responsePostDto", responsePostDto);
 
         return "view/post-detail";
+    }
+
+    @GetMapping("/upload")
+    public String postWrite(RequestPostDto dto, @LoginMember SessionMember member) {
+        if (member != null) {
+            dto.setMemberId(member.getMemberId());
+            System.out.println(dto.getMemberId());
+            boolean result = postService.write(dto);
+            Long postId = dto.getPostId();
+            if(result){
+                return "redirect:/post/" + postId;
+            }
+        }
+
+        return "view/error/post-upload-fail";
     }
 }
