@@ -48,7 +48,7 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
 
         sessionStudentDto.setGithubUsername(attributes.getGithubUsername());
         studentMapper.updateStudent(sessionStudentDto);
-        MemberDto memberDto = saveOrUpdate(attributes, sessionStudentDto.getStudentId(), sessionStudentDto.getName());
+        MemberDto memberDto = saveOrUpdate(attributes, sessionStudentDto.getStudentId(), sessionStudentDto.getSemester(), sessionStudentDto.getName());
         httpSession.setAttribute("member", new SessionMember(sessionStudentDto, memberDto));
         httpSession.removeAttribute("studentDto");
 
@@ -60,10 +60,10 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
         );
     }
 
-    private MemberDto saveOrUpdate(OAuthAttributesDto attributes, Long studentId, String name) {
+    private MemberDto saveOrUpdate(OAuthAttributesDto attributes, Long studentId, Integer semester, String name) {
         Optional<MemberDto> oldMemberDto = memberMapper.findByGithubUsername(attributes.getGithubUsername());
 
-        MemberDto newMemberDto = attributes.toMemberDto(studentId, name);
+        MemberDto newMemberDto = attributes.toMemberDto(studentId, semester, name);
         if (oldMemberDto.isPresent()) {
             newMemberDto.setMemberId(oldMemberDto.get().getMemberId());
             memberMapper.updateMember(newMemberDto);
