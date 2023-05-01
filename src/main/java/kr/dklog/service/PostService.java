@@ -1,12 +1,14 @@
 package kr.dklog.service;
 
 import kr.dklog.dto.PostDto;
+import kr.dklog.dto.request.RequestPostDto;
 import kr.dklog.dto.response.PreviewPostDto;
 import kr.dklog.dto.response.ResponsePostListDto;
 import kr.dklog.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -86,5 +88,16 @@ public class PostService {
         }
 
         return imageSrc;
+    }
+
+    public boolean write(RequestPostDto requestPostDto) {
+        requestPostDto.setCreatedDate(LocalDateTime.now());
+
+        int result = postMapper.save(requestPostDto);
+        if (result == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

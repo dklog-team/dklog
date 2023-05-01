@@ -23,4 +23,8 @@
         where post_id = #{postId}
     </select>
 
+    <insert id="save" useGeneratedKeys="true" keyColumn="post_id" keyProperty="postId" parameterType="kr.dklog.dto.request.RequestPostDto">
+        insert into post (post_id, title, content_md, content_html, created_date, member_id)
+        values (null, #{title}, #{contentMd}, #{contentHtml}, #{createdDate}, #{memberId});
+    </insert>
 </mapper>
