@@ -4,29 +4,42 @@ import kr.dklog.common.util.PagingUtil;
 import kr.dklog.dto.PostDto;
 import kr.dklog.dto.common.RequestListDto;
 import kr.dklog.dto.response.PreviewPostDto;
+import kr.dklog.dto.response.ResponsePostDto;
 import kr.dklog.dto.response.ResponsePostListDto;
 import kr.dklog.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
     private final PostMapper postMapper;
 
-    public PostDto get(Long postId) {
-        Optional<PostDto> optionalPostDto = postMapper.findById(postId);
-        PostDto postDto = optionalPostDto.get();
+    public ResponsePostDto get(Long postId) {
+        PostDto postDto = postMapper.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글 없음"));
 
-        return postDto;
+        ResponsePostDto responsePostDto = new ResponsePostDto();
+        responsePostDto.setPostId(postDto.getPostId());
+        responsePostDto.setTitle(postDto.getTitle());
+        responsePostDto.setContentMd(postDto.getContentMd());
+        responsePostDto.setContentHtml(postDto.getContentHtml());
+        responsePostDto.setCreatedDate(postDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
+//        responsePostDto.setModifiedDate(postDto.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")));
+        responsePostDto.setMemberId(postDto.getMemberId());
+        responsePostDto.setUsername(postDto.getUsername());
+        responsePostDto.setPicture(postDto.getPicture());
+
+        return responsePostDto;
     }
 
     public ResponsePostListDto getList(RequestListDto requestListDto) {
