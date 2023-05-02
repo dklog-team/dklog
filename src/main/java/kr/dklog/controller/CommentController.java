@@ -25,14 +25,38 @@ public class CommentController {
         return "/view/comment";
     }
 
-    //comment insert하는 컨트롤러
-    @PostMapping("/insertComment")
+    @PostMapping("/insert/comment")
     @ResponseBody
     public ResponseCommentDto addComment(@RequestBody CommentDto commentDto){
-        LocalDateTime created_date = LocalDateTime.now();
-        CommentDto Comment = new CommentDto(commentDto.getContent(), created_date, commentDto.getPostId());
-        ResponseCommentDto responseCommentDto = new ResponseCommentDto(commentDto.getContent(), created_date.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")), commentDto.getPostId());
-        commentService.addComment(Comment);
+        LocalDateTime now = LocalDateTime.now();
+        CommentDto comment = new CommentDto();
+        comment.setContent(commentDto.getContent());
+        comment.setCreatedDate(now);
+        comment.setPostId(commentDto.getPostId());
+        commentService.addComment(comment);
+
+        ResponseCommentDto responseCommentDto = new ResponseCommentDto();
+        responseCommentDto.setContent(commentDto.getContent());
+        responseCommentDto.setCreatedDate(now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
+        responseCommentDto.setPostId(commentDto.getPostId());
         return responseCommentDto;
     }
+
+    @PostMapping("/update/comment")
+    @ResponseBody
+    public ResponseCommentDto fixComment(@RequestBody CommentDto commentDto){
+        LocalDateTime now = LocalDateTime.now();
+        CommentDto fixedComment = new CommentDto();
+        fixedComment.setContent(commentDto.getContent());
+        fixedComment.setModifiedDate(now);
+        fixedComment.setCommentID(commentDto.getCommentID());
+        commentService.fixComment(fixedComment);
+
+        ResponseCommentDto responseCommentDto = new ResponseCommentDto();
+        responseCommentDto.setContent(commentDto.getContent());
+        responseCommentDto.setModifiedDate(now.format(DateTimeFormatter.ofPattern("수정됨: yyyy년 MM월 dd일 HH:mm")));
+        responseCommentDto.setCommendID(commentDto.getCommentID());
+        return responseCommentDto;
+    }
+
 }
