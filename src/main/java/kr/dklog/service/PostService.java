@@ -46,7 +46,7 @@ public class PostService {
 
     public ResponsePostListDto getList(RequestListDto requestListDto) {
         List<PostDto> postDtoList = postMapper.findAll(requestListDto);
-        Long totalCount = postMapper.countBy();
+        Long totalCount = postMapper.countBy(requestListDto.getKeyword());
 
         int totalPages = (int) (totalCount % requestListDto.getPageSize() == 0 ?
                         totalCount / requestListDto.getPageSize() : totalCount / requestListDto.getPageSize() + 1);
