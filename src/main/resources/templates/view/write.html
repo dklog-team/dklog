@@ -18,7 +18,11 @@
             </div>
             <div id="btnContainer" class="flex flex-row justify-between h-8 mt-2">
                 <div class="w-1/6 text-left">
-                    <img th:src="@{/images/image-upload-icon.png}" class="mt-2 ml-2 hover:cursor-pointer hover:opacity-80">
+                    <button id="btn-image-upload"><!-- 인영 : 버튼 추가-->
+                        <img th:src="@{/images/image-upload-icon.png}"
+                             class="mt-2 ml-2 hover:cursor-pointer hover:opacity-80">
+                    </button>
+                    <input type="file" id="upload-image" style="display: none" accept="image/*"/>
                 </div>
                 <div class="w-3/6"></div>
                 <div class="w-2/6 text-right">
@@ -170,6 +174,44 @@
             } else {
                 writeForm.submit();
             }
+        });
+
+        /*이미지 업로드 관련 이벤트*/
+        const imageUploadBtn = document.getElementById('btn-image-upload');
+        const inputImageUpload = document.getElementById('upload-image');
+
+        imageUploadBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            inputImageUpload.click();
+        });
+
+        inputImageUpload.addEventListener('change', (event) => {
+
+            const formData = new FormData();
+
+            formData.append('image', event.target.files[0]);
+
+            axios({
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Access-Control-Allow-Origin": "*",
+                },
+                url: "/image/upload",
+                method: "POST",
+                data: formData,
+            })
+                .then((response) => {
+                    console.log(response.data);
+                    console.log(response.data.mdName);
+
+                    const element = document.getElementById("content");
+
+                    element.innerHTML = '<div th:unless="${response.data.mdName} == null"> !(image)["${response.data.mdName}"] </div>';
+
+                }).catch((error) => {
+                console.log(error);
+            });
+
         });
 
     </script>

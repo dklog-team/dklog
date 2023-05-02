@@ -29,6 +29,7 @@ public class FileUploadService {
 
         MultipartFile image = requestDto.getImage();
 
+
         String path = new File(imageUploadPath).getAbsolutePath();
 
         ResponseUploadResultDto responseDto = new ResponseUploadResultDto();
@@ -65,7 +66,7 @@ public class FileUploadService {
 
         imageMapper.save(responseDto);
 
-        File file = new File(responseDto.getLocation() + "/" + responseDto.getStoreName() + responseDto.getFileType());
+        File file = new File(responseDto.getLocation()+"/"  + responseDto.getStoreName() + responseDto.getFileType());
 
         if (!file.exists()) {
             file.mkdirs();
