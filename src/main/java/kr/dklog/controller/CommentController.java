@@ -34,7 +34,7 @@ public class CommentController {
         LocalDateTime now = LocalDateTime.now();
         CommentDto comment = new CommentDto();
         ResponseCommentDto responseCommentDto = new ResponseCommentDto();
-        if(commentDto.getContent() != null && commentDto.getContent().trim() != ""){
+        if(commentDto.getContent() != null && !(commentDto.getContent().trim().equals(""))){
             comment.setContent(commentDto.getContent());
             comment.setCreatedDate(now);
             comment.setPostId(commentDto.getPostId());

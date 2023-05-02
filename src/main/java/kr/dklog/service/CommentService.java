@@ -35,15 +35,15 @@ public class CommentService {
                 lastWriteDate = "수정됨 ";
             }
             if(period.getYears()>0) {
-                lastWriteDate += String.valueOf(period.getYears()) + "년전";
+                lastWriteDate += period.getYears() + "년전";
             }else if(period.getMonths()>0){
-                lastWriteDate += String.valueOf(period.getMonths()) + "개월전";
+                lastWriteDate += period.getMonths() + "개월전";
             }else if(period.getDays()>0){
-                lastWriteDate += String.valueOf(period.getDays()) + "일전";
+                lastWriteDate += period.getDays() + "일전";
             }else if(duration.toHours()>0) {
-                lastWriteDate += String.valueOf(duration.toHours()) + "시간전";
+                lastWriteDate += duration.toHours() + "시간전";
             }else if(duration.toMinutes()>0){
-                lastWriteDate += String.valueOf(duration.toMinutes()) + "분전";
+                lastWriteDate += duration.toMinutes() + "분전";
             }else{
                 lastWriteDate += "방금전";
             }
