@@ -4,6 +4,7 @@ import kr.dklog.common.util.PagingUtil;
 import kr.dklog.dto.PostDto;
 import kr.dklog.dto.request.RequestPostDto;
 import kr.dklog.dto.common.RequestListDto;
+import kr.dklog.dto.request.RequestUpdatePostDto;
 import kr.dklog.dto.response.PreviewPostDto;
 import kr.dklog.dto.response.ResponsePostDto;
 import kr.dklog.dto.response.ResponsePostListDto;
@@ -116,6 +117,17 @@ public class PostService {
         requestPostDto.setCreatedDate(LocalDateTime.now());
 
         int result = postMapper.save(requestPostDto);
+        if (result == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean modify(RequestUpdatePostDto requestUpdatePostDto) {
+        requestUpdatePostDto.setModifiedDate(LocalDateTime.now());
+
+        int result = postMapper.update(requestUpdatePostDto);
         if (result == 1) {
             return true;
         } else {

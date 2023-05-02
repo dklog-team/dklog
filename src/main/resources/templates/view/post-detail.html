@@ -9,16 +9,22 @@
         <!-- content header -->
         <section>
             <h1 th:text="${responsePostDto.title}" class="text-4xl font-semibold mb-6">title</h1>
-            <div class="text-gray-500 flex items-center">
-                <span th:text="${responsePostDto.createdDate}">createdDate</span>
-                <span class="mx-4">|</span>
-                <div class="avatar mr-2">
-                    <div class="w-6 rounded-full ring-2 ring-gray-300">
-                        <img th:src="${responsePostDto.picture}"/>
+                <div class="text-gray-500 flex items-center">
+                    <div class="w-4/5">
+                        <span th:text="${responsePostDto.createdDate}">createdDate</span>
+                        <span class="mx-4">|</span>
+                        <div class="avatar mr-2">
+                            <div class="w-6 rounded-full ring-2 ring-gray-300">
+                                <img th:src="${responsePostDto.picture}"/>
+                            </div>
+                        </div>
+                        <span th:text="${responsePostDto.username}">username</span>
+                    </div>
+                    <div th:if="${member}" id="btnContainer" class="flex justify-end w-1/5">
+                        <img id="postEditBtn" th:src="@{/images/post-edit-icon.png}" class="ml-1 opacity-40 hover:opacity-100 hover:cursor-pointer"/>
+                        <img th:src="@{/images/post-delete-icon.png}" class="opacity-40 hover:opacity-100 hover:cursor-pointer"/>
                     </div>
                 </div>
-                <span th:text="${responsePostDto.username}">username</span>
-            </div>
         </section>
         <hr class="my-10"/>
         <!-- content main -->
@@ -28,5 +34,10 @@
         <hr class="my-10"/>
         <!-- comment -->
     </main>
+    <script th:inline="javascript">
+        document.getElementById('postEditBtn').addEventListener('click', function () {
+            location.href = '/post/edit/' + [[${responsePostDto.postId}]];
+        });
+    </script>
 </th:block>
 </html>
