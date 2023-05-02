@@ -14,4 +14,6 @@ public interface MemberMapper {
     int save(MemberDto memberDto);
 
     Optional<MemberDto> findById(Long memberId);
+
+    String findUsernameById(Long memberID);
 }
