@@ -51,14 +51,13 @@ public class CommentController {
 
     @PostMapping("/comment/update")
     @ResponseBody
-    public ResponseCommentDto fixComment(@RequestBody CommentDto commentDto){
-//        , @LoginMember SessionMember sessionMember
+    public ResponseCommentDto fixComment(@RequestBody CommentDto commentDto, @LoginMember SessionMember sessionMember){
         LocalDateTime now = LocalDateTime.now();
         CommentDto fixedComment = new CommentDto();
         fixedComment.setContent(commentDto.getContent());
         fixedComment.setModifiedDate(now);
         fixedComment.setCommentId(commentDto.getCommentId());
-        fixedComment.setMemberId(1L);
+        fixedComment.setMemberId(sessionMember.getMemberId());
         commentService.fixComment(fixedComment);
 
         ResponseCommentDto responseCommentDto = new ResponseCommentDto();
