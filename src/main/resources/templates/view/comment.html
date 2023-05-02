@@ -45,7 +45,7 @@
                     content,
                     postId
                 }
-                axios.post('/insertcomment', sendParam)
+                axios.post('/insert/comment', sendParam)
                     .then(function (response) {
                         console.log(response)
                         const tbody = document.getElementById("commentlistbox")
