@@ -9,4 +9,5 @@ import java.util.List;
 public interface CommentMapper {
     void insertComment(CommentDto commentDto);
     List<CommentDto> selectComment(Long post_id);
+    void updateComment(CommentDto commentDto);
 }

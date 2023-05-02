@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,11 +24,19 @@ public class CommentService {
         List<ResponseCommentDto> responseCommentDtoList = commentDtos.stream().map(commentDto -> {
             ResponseCommentDto responseCommentDto = new ResponseCommentDto();
             responseCommentDto.setContent(commentDto.getContent());
-            responseCommentDto.setCreatedDate(commentDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
+            if(Objects.isNull(commentDto.getModifiedDate())){
+                responseCommentDto.setCreatedDate(commentDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
+            }else{
+                responseCommentDto.setModifiedDate(commentDto.getModifiedDate().format(DateTimeFormatter.ofPattern("수정됨: yyyy년 MM월 dd일 HH:mm")));
+            }
+            responseCommentDto.setCommendID(commentDto.getCommentID());
             responseCommentDto.setPostId(commentDto.getPostId());
             return responseCommentDto;
         }).collect(Collectors.toList());
 
         return responseCommentDtoList;
+    }
+    public void fixComment(CommentDto commentDto){
+        commentMapper.updateComment(commentDto);
     }
 }

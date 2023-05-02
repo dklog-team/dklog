@@ -3,7 +3,7 @@
 <mapper namespace="kr.dklog.mapper.CommentMapper">
 
     <select id="selectComment" resultType="kr.dklog.dto.CommentDto" parameterType="java.lang.Integer">
-        SELECT content, created_date, post_id
+        SELECT comment_id,content, created_date, modified_date,post_id
         FROM comment
         where post_id = ${postId};
     </select>
@@ -12,4 +12,10 @@
         INSERT INTO comment(content, created_date, post_id)
         VALUES (#{content}, #{createdDate}, #{postId})
     </insert>
+
+    <update id="updateComment" parameterType="kr.dklog.dto.CommentDto">
+        UPDATE comment
+        SET modified_date = #{modifiedDate}, content = #{content}
+        WHERE comment_id = #{commentID}
+    </update>
 </mapper>
