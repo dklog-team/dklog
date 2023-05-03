@@ -48,7 +48,7 @@ public class CommentService {
                 lastWriteDate += "방금전";
             }
             responseCommentDto.setContent(commentDto.getContent());
-            responseCommentDto.setCommendID(commentDto.getCommentId());
+            responseCommentDto.setCommentId(commentDto.getCommentId());
             responseCommentDto.setPostId(commentDto.getPostId());
             responseCommentDto.setMemberId(commentDto.getMemberId());
             responseCommentDto.setUsername(memberMapper.findUsernameById(commentDto.getMemberId()));
@@ -68,5 +68,9 @@ public class CommentService {
 
     public void removeComment(CommentDto commentDto){
         commentMapper.deleteComment(commentDto);
+    }
+
+    public Long getInsertedCommentId(){
+        return commentMapper.insertedCommentId();
     }
 }

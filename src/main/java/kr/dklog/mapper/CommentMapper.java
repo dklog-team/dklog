@@ -11,4 +11,5 @@ public interface CommentMapper {
     void insertComment(CommentDto commentDto);
     void updateComment(CommentDto commentDto);
     void deleteComment(CommentDto commentDto);
+    Long insertedCommentId();
 }
