@@ -136,4 +136,8 @@ public class PostService {
             return false;
         }
     }
+
+    public void delete(Long postId)  throws Exception{
+        postMapper.delete(postId);
+    }
 }

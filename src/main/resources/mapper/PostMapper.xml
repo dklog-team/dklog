@@ -58,4 +58,8 @@
             modified_date = #{modifiedDate}
         where post_id = #{postId}
     </update>
+
+    <delete id="delete" parameterType="Long">
+        delete from post where post_id = #{post_id}
+    </delete>
 </mapper>
