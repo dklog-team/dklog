@@ -6,25 +6,36 @@
 >
 <th:block layout:fragment="content">
     <main>
-        <form id="writeForm" method="post" action="/post/upload" class="h-full w-full overflow-hidden">
-            <div id="title" class="h-8 w-full">
-                <input type="text" name="title" th:value="${responsePostDto} ? ${responsePostDto.getTitle()} : null"  placeholder="제목" class="input focus:outline-none h-7 w-full ml-1 mr-2 my-0.5 p-2" required/>
-            </div>
-            <div id="contentContainer" class="flex flex-row content-h-full w-full text-left">
-                <textarea id="content" name="contentMd" th:text="${responsePostDto} ? ${responsePostDto.getContentMd()} : null" onkeyup="printPreview()" class="textarea text-base border-yellow-400 rounded-none resize-none w-1/2 focus:outline-none h-full my-1 p-3"></textarea>
-                <div id="previewScroll" class="overflow-x-hidden text-left overflow-auto border border-1 border-yellow-400 rounded-none resize-none basis-1/2 focus:outline-none h-full my-1 p-3">
-                    <div id="previewContent" class="prose" style="padding: 0; overflow: hidden; margin: 0;"></div>
+        <form id="writeForm" method="post" action="/post/upload" class="h-full h-full">
+            <div id="contentContainer" class="w-full flex justify-between">
+                <div class="w-1/2 bg-gray-100 h-full">
+                    <div class="p-10 h-full">
+                        <div class="w-full bg-gray-100 mb-10">
+                            <input id="title" type="text" name="title" class="w-full text-4xl font-bold placeholder:text-gray-400 bg-gray-100 focus:outline-0" placeholder="제목을 입력해주세요" th:value="${responsePostDto} ? ${responsePostDto.getTitle()} : null" required/>
+                        </div>
+                        <textarea id="content" name="contentMd" class="w-full bg-gray-100 focus:outline-0" th:text="${responsePostDto} ? ${responsePostDto.getContentMd()} : null" onkeyup="printPreview()"></textarea>
+                    </div>
+                </div>
+                <div class="w-1/2 p-10">
+                    <div class="text-5xl font-bold w-full mb-10">
+                        <h1 id="previewTitle"></h1>
+                    </div>
+                    <div id="previewScroll" class="overflow-x-hidden h-full">
+                        <div id="previewContent" class="prose min-w-full"></div>
+                    </div>
                 </div>
             </div>
-            <div id="btnContainer" class="flex flex-row justify-between h-8 mt-2">
-                <div class="w-1/6 text-left">
-                    <img th:src="@{/images/image-upload-icon.png}" class="mt-2 ml-2 hover:cursor-pointer hover:opacity-80">
+            <div id="btnContainer" class="w-1/2 px-10 py-5 bg-gray-200 inset-x-0 bottom-0 flex justify-between items-center">
+                <div class="transition p-1 flex items-center text-gray-700 gap-x-2 rounded-md cursor-pointer hover:bg-gray-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                    <span>사진첨부</span>
                 </div>
-                <div class="w-3/6"></div>
-                <div class="w-2/6 text-right">
-                    <a th:href="@{/}" type="reset" class="btn btn-sm bg-black text-white border-none my-1 mx-1">취소</a>
-                    <button th:unless="${responsePostDto}" id="submitBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none my-1 mx-1 mr-2">저장</button>
-                    <button th:if="${responsePostDto}" id="updateBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none my-1 mx-1 mr-2">수정</button>
+                <div class="flex items-center gap-x-4">
+                    <a th:href="@{/}" type="reset" class="btn btn-sm bg-black text-white border-none">취소</a>
+                    <button th:unless="${responsePostDto}" id="submitBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none">저장</button>
+                    <button th:if="${responsePostDto}" id="updateBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none">수정</button>
                 </div>
             </div>
         </form>
@@ -36,13 +47,22 @@
 
         html.style.height = '100%';
         body.style.height = '100%';
-        body.style.textAlign = 'center';
         main.style.height = '100%';
 
         let contentContainer = document.getElementById('contentContainer');
         contentContainer.classList.add('content-h-full');
 
         let content = document.getElementById('content');
+        content.focus()
+
+        content.classList.add('textarea-h-full');
+
+        let title = document.getElementById('title');
+        title.addEventListener('keyup', (e) => {
+            let previewTitle = document.getElementById('previewTitle');
+            previewTitle.textContent = e.target.value;
+        })
+
         let previewContent = document.getElementById('previewContent');
         let previewScroll = document.getElementById('previewScroll');
 
