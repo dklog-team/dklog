@@ -21,14 +21,28 @@
             <li class="gap-x-6 py-5" th:each="comment : ${commentList}">
                 <div class="w-10/12 gap-x-4">
                     <div class="min-w-0">
-                        <div class="whitespace-pre-wrap mt-1 truncate text-xs leading-5 text-gray-500"
+                        <div th:id = "|${comment.commentId}content|" class="whitespace-pre-wrap mt-1 truncate text-xs leading-5 text-gray-500"
                              th:text="${comment.content}"></div>
                     </div>
                 </div>
                 <div class="hidden sm:flex sm:flex-col sm:items-end">
                     <p class="text-sm leading-6 text-gray-900" th:text="${comment.username}"></p>
                     <!--시간을 그대로 나타낼지 아니면 몇 시간전 이런거로 할지  -->
-                    <p class="mt-1 text-xs leading-5 text-gray-500" th:text="${comment.writeDate}"></p>
+                    <p th:id="|${comment.commentId}date|" class="mt-1 text-xs leading-5 text-gray-500" th:text="${comment.writeDate}"></p>
+                </div>
+
+                <button th:id="|${comment.commentId}fixBtn|" th:if="${comment.username}==${myUsername}">수정</button>
+
+                <div th:id="|${comment.commentId}fixForm|" class="mb-4 border border-gray-200 rounded-lg bg-gray-50" style="display: none">
+                    <div class="px-4 py-2 bg-white rounded-t-lg">
+                        <textarea th:id="|${comment.commentId}fixComment|" rows="4" class="resize-none w-full px-0 text-gray-900 bg-white outline-none"
+                          placeholder="수정할 댓글을 작성해주세요." required></textarea>
+                    </div>
+                    <div class="flex items-center justify-end px-3 py-2">
+                        <button th:id="|${comment.commentId}savefixedComment|" class="btn btn-secondary btn-sm text-xs text-center">
+                            수정하기
+                        </button>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -37,29 +51,93 @@
     <script>
         const postId = [[${postId}]]
         const username = "[[${username}]]"
-        const saveBtn = document.getElementById('saveComment');
-        saveBtn.addEventListener('click', function () {
-            const content = document.getElementById("writeComment").value;
-            if(content != null && content.trim() != ''){
-                const sendParam = {
+        const myUsername = "[[${myUsername}]]"
+        const saveBtn = document.getElementById('saveComment')
+        const writeArea = document.getElementById('writeComment')
+        
+        writeArea.addEventListener('click', function () {
+            if (myUsername == null || myUsername == "") {
+                alert("로그인 후 이용해주세요")
+                writeArea.blur();
+            }
+        })
+
+        function fixCommentFunc(id){
+            console.log(id + "현재값")
+            document.getElementById(id+"fixBtn").addEventListener('click',function (){
+                if(document.getElementById(id+"fixForm").style.display !== 'none'){
+
+                    document.getElementById(id+"fixForm").style.display = 'none'
+                }else{
+                    document.getElementById(id+"fixForm").style.display = 'block'
+                }
+            })
+            document.getElementById(id+"savefixedComment").addEventListener('click', function (){
+                const content = document.getElementById(id+"fixComment").value
+                const commentId = id
+                if (content != null && content.trim() != '' && myUsername != null) {
+                    const sendUpdateParam = {
+                        content,
+                        commentId
+                    }
+                    axios.post('/comment/update', sendUpdateParam)
+                        .then(function (response) {
+                            const fixedContent = document.getElementById(id+"content")
+                            const fixedDate = document.getElementById(id+"date")
+                            const html = "<div class=\"whitespace-pre-wrap mt-1 truncate text-xs leading-5 text-gray-500\">" +
+                                response.data.content + "</div>"
+                            fixedContent.innerHTML = html
+                            fixedDate.innerText = "수정됨 방금전"
+                            alert("수정 완료")
+                            document.getElementById(id+"fixForm").style.display = 'none'
+                            document.getElementById(id+"fixComment").value = ''
+                        })
+                } else if (myUsername == null || myUsername == "") {
+                    alert("잘못된 접근입니다.")
+                } else {
+                    alert("수정할 댓글을 입력해주세요")
+                }
+            })
+        }
+
+        function insertCommentFunc() {
+            const content = writeArea.value;
+            if (content != null && content.trim() != '' && myUsername != null) {
+                const sendInsertParam = {
                     content,
                     postId
                 }
-                axios.post('/insert/comment', sendParam)
+                axios.post('/insert/comment', sendInsertParam)
                     .then(function (response) {
                         const commentList = document.getElementById("commentListBox")
                         const html = "<li class='gap-x-6 py-5'><div class='w-10/12 gap-x-4'>" +
-                            "<div class='min-w-0'><div class='whitespace-pre-wrap mt-1 truncate text-xs leading-5 text-gray-500'>" + response.data.content + "</div></div></div>" +
+                            "<div class='min-w-0'><div id="+response.data.commentId+"content class='whitespace-pre-wrap mt-1 truncate text-xs leading-5 text-gray-500'>" + response.data.content + "</div></div></div>" +
                             "<div class='hidden sm:flex sm:flex-col sm:items-end'><p class='text-sm leading-6 text-gray-900'>" + response.data.username + "</p>" +
-                            "<p class='mt-1 text-xs leading-5 text-gray-500'>" + response.data.writeDate + "</p></div></li>"
-                        commentList.innerHTML += html;
+                            "<p class='mt-1 text-xs leading-5 text-gray-500'>" + response.data.writeDate + "</p></div>" +
+                            "<button id=" + response.data.commentId + "fixBtn>수정</button></li>"
+                        commentList.insertAdjacentHTML("afterbegin", html)
                         alert("댓글 작성 완료")
-                        document.getElementById("writeComment").value=''
+                        document.getElementById("writeComment").value = ''
+                        fixCommentFunc(response.data.commentId)
                     })
-            }else{
-                alert("댓글을 작성해주세요")
+            } else if (myUsername == null || myUsername == "") {
+                alert("로그인 후 이용해주세요")
+            } else {
+                alert("댓글을 입력해주세요")
             }
+        }
+
+
+
+        saveBtn.addEventListener('click', function () {
+            insertCommentFunc()
         })
+
+        const commentIdList = [[${commentIdList}]]
+        for (const id in commentIdList) {
+            fixCommentFunc(commentIdList[id])
+        }
+
     </script>
 </th:block>
 </html>

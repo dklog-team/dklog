@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -21,10 +22,24 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/detail/comment/{postId}")
-    public String commentPage(Model model, @PathVariable Long postId) {
+    public String commentPage(Model model, @PathVariable Long postId, @LoginMember SessionMember sessionMember) {
         List<ResponseCommentDto> commentList = commentService.getComment(postId);
         model.addAttribute("commentList", commentList);
         model.addAttribute("postId", postId);
+        String myname = null;
+        if(sessionMember != null){
+            myname = sessionMember.getUsername();
+        }
+        model.addAttribute("myUsername", myname);
+        LinkedList<Long> commentIdList = new LinkedList<>();
+        if(sessionMember !=null) {
+            for (ResponseCommentDto list : commentList) {
+                if (list.getMemberId() == sessionMember.getMemberId())
+                    commentIdList.push(list.getCommentId());
+            }
+        }
+        model.addAttribute("commentIdList", commentIdList);
+        System.out.println(commentIdList);
         return "/view/comment";
     }
 
@@ -44,6 +59,9 @@ public class CommentController {
             responseCommentDto.setContent(commentDto.getContent());
             responseCommentDto.setWriteDate("방금전");
             responseCommentDto.setUsername(sessionMember.getUsername());
+            responseCommentDto.setCommentId(comment.getCommentId());
+            responseCommentDto.setCommentId(commentService.getInsertedCommentId());
+            System.out.println(commentService.getInsertedCommentId());
             return responseCommentDto;
         }
         return responseCommentDto;

@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseCommentDto {
-    private Long commendID;
+    private Long commentId;
     private String content;
     private String writeDate;
     private Long postId;
