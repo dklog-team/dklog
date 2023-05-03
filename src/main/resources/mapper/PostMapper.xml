@@ -43,4 +43,13 @@
         insert into post (post_id, title, content_md, content_html, created_date, member_id)
         values (null, #{title}, #{contentMd}, #{contentHtml}, #{createdDate}, #{memberId});
     </insert>
+    
+    <update id="update" parameterType="kr.dklog.dto.request.RequestUpdatePostDto">
+        update post
+        set title = #{title},
+            content_md = #{contentMd},
+            content_html = #{contentHtml},
+            modified_date = #{modifiedDate}
+        where post_id = #{postId}
+    </update>
 </mapper>

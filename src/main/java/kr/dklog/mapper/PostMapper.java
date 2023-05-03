@@ -3,6 +3,7 @@ package kr.dklog.mapper;
 import kr.dklog.dto.PostDto;
 import kr.dklog.dto.common.RequestListDto;
 import kr.dklog.dto.request.RequestPostDto;
+import kr.dklog.dto.request.RequestUpdatePostDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface PostMapper {
     List<PostDto> findAll();
 
    int save(RequestPostDto requestPostDto);
+
+    int update(RequestUpdatePostDto requestUpdatePostDto);
 }
