@@ -26,8 +26,11 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/write")
-    public String postWritePage() {
-        return "view/write";
+    public String postWritePage(@LoginMember SessionMember member) {
+        if (member != null){
+            return "view/write";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/{postId}")
@@ -59,12 +62,15 @@ public class PostController {
     }
 
     @GetMapping("/edit/{postId}")
-    public String postEditPage(Model model, @PathVariable Long postId) {
-        ResponsePostDto responsePostDto = postService.get(postId);
-
-        model.addAttribute("responsePostDto", responsePostDto);
-
-        return "view/write";
+    public String postEditPage(Model model, @PathVariable Long postId, @LoginMember SessionMember sessionMember) {
+        if(sessionMember != null){
+            ResponsePostDto responsePostDto = postService.get(postId);
+            if(sessionMember.getMemberId() == responsePostDto.getMemberId()){
+                model.addAttribute("responsePostDto", responsePostDto);
+                return "view/write";
+            }
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/update")
