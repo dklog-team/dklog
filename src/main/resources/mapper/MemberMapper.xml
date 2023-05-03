@@ -31,4 +31,10 @@
         where member_id = #{memberId}
     </update>
 
+    <select id="findUsernameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select username
+        from member
+        where member_id = #{memberId}
+    </select>
+
 </mapper>

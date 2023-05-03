@@ -12,7 +12,8 @@ import lombok.Setter;
 public class ResponseCommentDto {
     private Long commendID;
     private String content;
-    private String createdDate;
-    private String modifiedDate;
+    private String writeDate;
     private Long postId;
+    private Long memberId;
+    private String username;
 }
