@@ -4,6 +4,7 @@ import kr.dklog.common.util.PagingUtil;
 import kr.dklog.dto.PostDto;
 import kr.dklog.dto.request.RequestPostDto;
 import kr.dklog.dto.common.RequestListDto;
+import kr.dklog.dto.request.RequestUpdatePostDto;
 import kr.dklog.dto.response.PreviewPostDto;
 import kr.dklog.dto.response.ResponsePostDto;
 import kr.dklog.dto.response.ResponsePostListDto;
@@ -36,7 +37,7 @@ public class PostService {
         responsePostDto.setContentMd(postDto.getContentMd());
         responsePostDto.setContentHtml(postDto.getContentHtml());
         responsePostDto.setCreatedDate(postDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
-//        responsePostDto.setModifiedDate(postDto.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")));
+        responsePostDto.setModifiedDate(postDto.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
         responsePostDto.setMemberId(postDto.getMemberId());
         responsePostDto.setUsername(postDto.getUsername());
         responsePostDto.setPicture(postDto.getPicture());
@@ -46,7 +47,7 @@ public class PostService {
 
     public ResponsePostListDto getList(RequestListDto requestListDto) {
         List<PostDto> postDtoList = postMapper.findAll(requestListDto);
-        Long totalCount = postMapper.countBy();
+        Long totalCount = postMapper.countBy(requestListDto.getKeyword());
 
         int totalPages = (int) (totalCount % requestListDto.getPageSize() == 0 ?
                         totalCount / requestListDto.getPageSize() : totalCount / requestListDto.getPageSize() + 1);
@@ -116,6 +117,17 @@ public class PostService {
         requestPostDto.setCreatedDate(LocalDateTime.now());
 
         int result = postMapper.save(requestPostDto);
+        if (result == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean modify(RequestUpdatePostDto requestUpdatePostDto) {
+        requestUpdatePostDto.setModifiedDate(LocalDateTime.now());
+
+        int result = postMapper.update(requestUpdatePostDto);
         if (result == 1) {
             return true;
         } else {

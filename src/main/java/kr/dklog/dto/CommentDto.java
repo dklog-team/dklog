@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDto {
+    private Long commentId;
     private String content;
     private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
+    private Long memberId;
     private Long postId;
 }

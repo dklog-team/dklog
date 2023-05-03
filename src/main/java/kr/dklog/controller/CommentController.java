@@ -1,5 +1,7 @@
 package kr.dklog.controller;
 
+import kr.dklog.common.session.LoginMember;
+import kr.dklog.common.session.SessionMember;
 import kr.dklog.dto.CommentDto;
 import kr.dklog.dto.response.ResponseCommentDto;
 import kr.dklog.service.CommentService;
@@ -15,6 +17,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CommentController {
+
     private final CommentService commentService;
 
     @GetMapping("/detail/comment/{postId}")
@@ -25,14 +28,50 @@ public class CommentController {
         return "/view/comment";
     }
 
-    //comment insert하는 컨트롤러
-    @PostMapping("/insertComment")
+    @PostMapping("/insert/comment")
     @ResponseBody
-    public ResponseCommentDto addComment(@RequestBody CommentDto commentDto){
-        LocalDateTime created_date = LocalDateTime.now();
-        CommentDto Comment = new CommentDto(commentDto.getContent(), created_date, commentDto.getPostId());
-        ResponseCommentDto responseCommentDto = new ResponseCommentDto(commentDto.getContent(), created_date.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")), commentDto.getPostId());
-        commentService.addComment(Comment);
+    public ResponseCommentDto addComment(@RequestBody CommentDto commentDto, @LoginMember SessionMember sessionMember){
+        LocalDateTime now = LocalDateTime.now();
+        CommentDto comment = new CommentDto();
+        ResponseCommentDto responseCommentDto = new ResponseCommentDto();
+        if(commentDto.getContent() != null && !(commentDto.getContent().trim().equals(""))){
+            comment.setContent(commentDto.getContent());
+            comment.setCreatedDate(now);
+            comment.setPostId(commentDto.getPostId());
+            comment.setMemberId(sessionMember.getMemberId());
+            commentService.addComment(comment);
+
+            responseCommentDto.setContent(commentDto.getContent());
+            responseCommentDto.setWriteDate("방금전");
+            responseCommentDto.setUsername(sessionMember.getUsername());
+            return responseCommentDto;
+        }
         return responseCommentDto;
+    }
+
+    @PostMapping("/comment/update")
+    @ResponseBody
+    public ResponseCommentDto fixComment(@RequestBody CommentDto commentDto, @LoginMember SessionMember sessionMember){
+        LocalDateTime now = LocalDateTime.now();
+        CommentDto fixedComment = new CommentDto();
+        fixedComment.setContent(commentDto.getContent());
+        fixedComment.setModifiedDate(now);
+        fixedComment.setCommentId(commentDto.getCommentId());
+        fixedComment.setMemberId(sessionMember.getMemberId());
+        commentService.fixComment(fixedComment);
+
+        ResponseCommentDto responseCommentDto = new ResponseCommentDto();
+        responseCommentDto.setContent(commentDto.getContent());
+        responseCommentDto.setWriteDate(now.format(DateTimeFormatter.ofPattern("수정됨 방금전")));
+        return responseCommentDto;
+    }
+
+    @PostMapping("/comment/delete")
+    @ResponseBody
+    public void removeComment(@RequestBody CommentDto commentDto, @LoginMember SessionMember sessionMember){
+        CommentDto removedComment = new CommentDto();
+        removedComment.setCommentId(commentDto.getCommentId());
+        removedComment.setMemberId(sessionMember.getMemberId());
+        commentService.removeComment(removedComment);
     }
 }

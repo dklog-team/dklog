@@ -7,6 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface CommentMapper {
-    void insertComment(CommentDto commentDto);
     List<CommentDto> selectComment(Long post_id);
+    void insertComment(CommentDto commentDto);
+    void updateComment(CommentDto commentDto);
+    void deleteComment(CommentDto commentDto);
 }
