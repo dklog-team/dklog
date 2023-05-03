@@ -174,15 +174,19 @@
                 writeForm.title.focus();
                 return false;
             } else {
+                history.replaceState(null, null, '/');
+                window.onpopstate = function() {
+                    history.go(1);
+                }
                 writeForm.submit();
             }
         }
 
-        [# th:unless= "${responsePostDto}" ]
+        [# th:if = "${responsePostDto} == null" ]
         document.getElementById('submitBtn').addEventListener('click', function (){
             let writeForm = document.getElementById('writeForm');
+
             appendContentHtmlToForm(writeForm);
-            writeForm.appendChild(inputContentHtml);
 
             validateForm(writeForm);
         });
