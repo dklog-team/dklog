@@ -23,4 +23,6 @@ public class ResponseUploadResultDto {
 
     private long postId;
 
+    private String imageURL;
+
 }
