@@ -57,16 +57,25 @@
                     <!-- sign up -->
                     <a th:href="@{/student/auth}" id="signUpBtn" class="btn text-white btn-sm">교육생 인증</a>
                 </div>
-                <div th:if="${session.member != null}" class="flex justify-center items-center gap-x-4">
-                    <div class="flex justify-center items-center gap-x-2">
-                        <div class="avatar">
-                            <div class="w-8 rounded-full ring-2 ring-gray-300">
-                                <img th:src="${session.member.picture}"/>
+                <div th:if="${session.member != null}" class="flex justify-center items-center gap-x-1">
+                    <a th:href="@{/post/write}" class="btn btn-secondary btn-sm">글쓰기</a>
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost">
+                            <div class="flex justify-center items-center gap-x-2">
+                                <div class="avatar">
+                                    <div class="w-8 rounded-full ring-2 ring-gray-300">
+                                        <img th:src="${session.member.picture}"/>
+                                    </div>
+                                </div>
+                                <span th:text="${session.member.username}">username</span>
                             </div>
-                        </div>
-                        <span th:text="${session.member.username}">username</span>
+                        </label>
+                        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
+                            <li><a id="logoutBtn" class="btn btn-ghost btn-sm p-0.5 " th:href="@{/logout}">로그아웃</a></li>
+                        </ul>
                     </div>
-                    <a id="logoutBtn" class="btn btn-secondary btn-sm" th:href="@{/logout}">로그아웃</a>
+
+
                 </div>
             </div>
         </div>
