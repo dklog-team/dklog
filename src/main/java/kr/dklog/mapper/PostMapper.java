@@ -16,7 +16,7 @@ public interface PostMapper {
 
     List<PostDto> findAll(RequestListDto requestListDto);
 
-    Long countBy();
+    Long countBy(String keyword);
 
     List<PostDto> findAll();
 

@@ -1,9 +1,6 @@
 package kr.dklog.dto.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -14,6 +11,8 @@ public class RequestListDto {
     private Integer page = 1;
 
     private Integer pageSize = 10;
+
+    private String keyword;
 
     public Integer getPage() {
         if (page - 1 < 0) {
