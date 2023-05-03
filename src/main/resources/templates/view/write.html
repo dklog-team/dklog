@@ -192,6 +192,7 @@
             formData.append('image', event.target.files[0]);
 
             axios({
+
                 headers: {
                     "Content-Type": "multipart/form-data",
                     "Access-Control-Allow-Origin": "*",
@@ -199,14 +200,22 @@
                 url: "/image/upload",
                 method: "POST",
                 data: formData,
-            })
-                .then((response) => {
+
+            }).then((response) => {
+
                     console.log(response.data);
-                    console.log(response.data.mdName);
+                    console.log(response.data.imageURL);
 
                     const element = document.getElementById("content");
 
-                    element.innerHTML = '<div th:unless="${response.data.mdName} == null"> !(image)["${response.data.mdName}"] </div>';
+                    let imageURL = response.data.imageURL;
+                    let imageMarkdown = `![image](${imageURL})`;
+
+                    console.log(imageMarkdown);
+
+                    element.value += `\n${imageMarkdown}`;
+
+                    printPreview();
 
                 }).catch((error) => {
                 console.log(error);
