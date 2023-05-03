@@ -37,7 +37,7 @@ public class PostService {
         responsePostDto.setContentMd(postDto.getContentMd());
         responsePostDto.setContentHtml(postDto.getContentHtml());
         responsePostDto.setCreatedDate(postDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
-        responsePostDto.setModifiedDate(postDto.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
+//        responsePostDto.setModifiedDate(postDto.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
         responsePostDto.setMemberId(postDto.getMemberId());
         responsePostDto.setUsername(postDto.getUsername());
         responsePostDto.setPicture(postDto.getPicture());
@@ -133,5 +133,9 @@ public class PostService {
         } else {
             return false;
         }
+    }
+
+    public void delete(Long postId)  throws Exception{
+        postMapper.delete(postId);
     }
 }
