@@ -2,10 +2,10 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default-layout}"
+      layout:decorate="~{layouts/comment-layout}"
 >
 <th:block layout:fragment="content">
-    <main class="mx-auto max-w-6xl py-20 px-4">
+    <main class="mx-auto max-w-6xl p-20 px-4">
         <!-- content header -->
         <section>
             <h1 th:text="${responsePostDto.title}" class="text-4xl font-semibold mb-6">title</h1>

@@ -1,4 +1,4 @@
-package kr.dklog.dto;
+package kr.dklog.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +11,15 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto {
+public class RequestUpdateCommentDto {
+
     private Long commentId;
+
     private String content;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-    private Long memberId;
+
     private Long postId;
-    private String username;
-    private String picture;
+
+    private Long memberId;
+
+    private LocalDateTime modifiedDate;
 }

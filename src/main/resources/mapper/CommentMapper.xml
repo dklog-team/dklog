@@ -29,4 +29,35 @@
         SELECT MAX(comment_id) AS comment_id
         FROM comment
     </select>
+
+    <select id="findAllByPostId" parameterType="Long" resultType="kr.dklog.dto.CommentDto">
+        select comment_id, content, c.created_date, c.modified_date, c.member_id, c.post_id, username, picture
+        from comment c
+                 join post p on c.post_id = p.post_id
+                 join member m on c.member_id = m.member_id
+        where c.post_id = #{postId}
+        order by c.created_date
+    </select>
+
+    <insert id="save" parameterType="kr.dklog.dto.CommentDto" useGeneratedKeys="true" keyColumn="comment_id" keyProperty="commentId">
+        insert into comment(comment_id, content, created_date, modified_date, member_id, post_id)
+        values (null, #{content}, #{createdDate}, null, #{memberId}, #{postId})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="kr.dklog.dto.CommentDto">
+        select *
+        from comment
+        where comment_id = #{commentId}
+    </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from comment where comment_id = #{commentId}
+    </delete>
+
+    <update id="updateById" parameterType="kr.dklog.dto.request.RequestUpdateCommentDto">
+        update comment
+        set content = #{content}, modified_date = #{modifiedDate}
+        where comment_id = #{commentId}
+    </update>
+
 </mapper>

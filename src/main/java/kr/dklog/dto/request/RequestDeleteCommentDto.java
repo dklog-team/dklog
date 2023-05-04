@@ -1,4 +1,4 @@
-package kr.dklog.dto.response;
+package kr.dklog.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseCommentDto {
-    private Long commentId;
-    private String content;
-    private String writeDate;
+public class RequestDeleteCommentDto {
+
     private Long postId;
+
+    private Long commentId;
+
     private Long memberId;
-    private String username;
-    private String picture;
 }

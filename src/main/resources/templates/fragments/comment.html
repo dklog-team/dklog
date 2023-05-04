@@ -1,0 +1,197 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<section th:fragment="comment-fragmenmt" class="mx-auto max-w-6xl px-4">
+    <div class="mb-4 border border-gray-300 rounded-lg shadow">
+        <div class="p-4 bg-white rounded-t-lg">
+                <textarea id="commentContent" rows="4" class="resize-none w-full bg-white outline-none"
+                          placeholder="댓글을 작성해주세요" required></textarea>
+        </div>
+        <div class="flex items-center justify-end bg-gray-200 rounded-b-lg">
+            <button id="saveCommentBtn" class="btn btn-secondary btn-sm m-2">
+                댓글 작성
+            </button>
+        </div>
+    </div>
+    <div id="commentContainer" class="my-20">
+        <div th:each="comment, i : ${responseCommentDtoList}" class="my-8">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center gap-x-4">
+                    <div class="avatar">
+                        <div class="w-10 rounded-full ring-2 ring-gray-300">
+                            <img th:src="${comment.picture}"/>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <span th:text="${comment.username}">username</span>
+                        </div>
+                        <div>
+                            <span th:text="${comment.writeDate}" class="text-sm text-gray-400">lastWriteDate</span>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${member.memberId == comment.memberId}" class="dropdown">
+                    <label tabindex="0" class="btn btn-ghost btn-sm px-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+                        </svg>
+                    </label>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-auto">
+                        <li>
+                            <a th:id="|openUpdateCommentContainerBtn${comment.commentId}|"
+                               th:onclick="|clickOpenUpdateCommentContainerBtn(${comment.commentId})|"
+                               class="text-gray-700 block px-4 py-2 text-sm flex" role="menuitem" tabindex="-1"
+                               id="postEditBtn">
+                                <div class="w-1/5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                                    </svg>
+                                </div>
+                                <div class="w-4/5 ml-2 text-center">
+                                    수정
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:id="|deleteCommentBtn${comment.commentId}|"
+                               th:onclick="|clickDeleteCommentBtn(${comment.commentId})|"
+                               class="text-gray-700 block px-4 py-2 text-sm flex" role="menuitem" tabindex="-1">
+                                <div class="w-1/5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                                    </svg>
+                                </div>
+                                <div class="w-4/5 ml-2 text-center">
+                                    삭제
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-8">
+                <!-- 댓글 -->
+                <p th:id="|comment${comment.commentId}|" class="whitespace-pre-wrap break-words"
+                   th:text="${comment.content}">comment</p>
+                <!-- 댓글 수정 -->
+                <div th:id="|updateCommentContainer${comment.commentId}|" class="mb-4 border border-gray-300 rounded-lg shadow" style="display: none;">
+                    <div class="p-4 bg-white rounded-t-lg">
+                        <textarea th:id="|updateCommentContent${comment.commentId}|" rows="4" class="resize-none w-full bg-white outline-none"
+                                  placeholder="수정할 댓글을 작성해주세요" required></textarea>
+                    </div>
+                    <div class="flex items-center justify-end bg-gray-200 rounded-b-lg">
+                        <button th:id="|cancelUpdateCommentBtn${comment.commentId}|" th:onclick="|clickCancelUpdateCommentBtn(${comment.commentId})|" class="btn text-white btn-sm m-2">
+                            취소
+                        </button>
+                        <button th:id="|updateCommentBtn${comment.commentId}|" th:onclick="|clickUpdateCommentBtn(${comment.commentId})|" class="btn btn-secondary btn-sm m-2">
+                            수정
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/js/api/core/request.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/comment.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common/comment-util.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common/display-util.js}"></script>
+    <script th:inline="javascript">
+        const postId = [[${responsePostDto.postId}]]
+        const memberId = [[${member.memberId}]]
+
+        // console.log(memberId)
+
+        const clickSaveCommentBtn = async () => {
+            let content = document.getElementById('commentContent').value;
+            const requestData = {
+                postId,
+                content,
+                memberId,
+            }
+            let response = await add(requestData);
+            console.log(response)
+            let newCommentList = response.data;
+            let commentContainer = document.getElementById('commentContainer');
+            commentContainer.innerHTML = ``;
+            let newCommentListHtml = getNewCommentListHtml(newCommentList);
+            commentContainer.innerHTML = newCommentListHtml;
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        const clickDeleteCommentBtn = async (commentId) => {
+            if (!confirm('정말 삭제하시겠습니까?')) {
+                return;
+            }
+            console.log('memberId: ', memberId);
+            const requestData = {
+                postId,
+                commentId,
+                memberId,
+            }
+            console.log(requestData);
+            let response = await remove(requestData);
+            let newCommentList = response.data;
+            let commentContainer = document.getElementById('commentContainer');
+            commentContainer.innerHTML = ``;
+            let newCommentListHtml = getNewCommentListHtml(newCommentList);
+            commentContainer.innerHTML = newCommentListHtml;
+        }
+
+        const clickOpenUpdateCommentContainerBtn = async (commentId) => {
+            let comment = document.getElementById(`comment${commentId}`);
+            displayToggle(comment);
+
+            displayToggle(document.getElementById(`updateCommentContainer${commentId}`));
+
+            let updateCommentContent = document.getElementById(`updateCommentContent${commentId}`);
+            updateCommentContent.value = comment.textContent;
+            updateCommentContent.focus()
+        }
+
+        const clickCancelUpdateCommentBtn = (commentId) => {
+
+            // displayToggle(document.getElementById(`comment${commentId}`))
+
+            displayToggle(document.getElementById(`comment${commentId}`));
+
+            displayToggle(document.getElementById(`updateCommentContainer${commentId}`));
+
+            let updateCommentContent = document.getElementById(`updateCommentContent${commentId}`);
+            updateCommentContent.textContent = '';
+        }
+
+        const clickUpdateCommentBtn = async (commentId) => {
+            let content = document.getElementById(`updateCommentContent${commentId}`).value
+
+            const requestData = {
+                postId,
+                commentId,
+                content,
+                memberId,
+            }
+            console.log(content);
+            let response = await update(requestData);
+            console.log(response.data);
+            
+            let updatedContent = response.data.content;
+
+            let comment = document.getElementById(`comment${commentId}`);
+            displayToggle(comment);
+            comment.textContent = updatedContent;
+
+            displayToggle(document.getElementById(`updateCommentContainer${commentId}`));
+
+            let updateCommentContent = document.getElementById(`updateCommentContent${commentId}`);
+        }
+
+        let saveCommentBtn = document.getElementById('saveCommentBtn');
+        saveCommentBtn.addEventListener('click', clickSaveCommentBtn);
+    </script>
+</section>
+</html>
