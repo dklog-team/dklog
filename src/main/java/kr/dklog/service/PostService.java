@@ -83,6 +83,19 @@ public class PostService {
         return responsePostListDto;
     }
 
+    public int getPageNum(Long postId){
+        List<Long> postIdList = postMapper.findAllId();
+
+        int pageNum = postIdList.indexOf(postId) + 1;
+
+        if(pageNum % 10 == 0){
+            return pageNum / 10;
+        }else {
+            return pageNum / 10 + 1;
+        }
+
+    }
+
     private String getPreviewContent(String contentHtml) {
         Pattern pattern = Pattern.compile("(<p>)(.*?)(\n)");
         Matcher matcher = pattern.matcher(contentHtml);
