@@ -51,7 +51,13 @@
             </div>
         </section>
         <!-- pagination -->
-        <div class="flex justify-center mt-10">
+        <div th:if="${responsePostListDto.postList.size() < 1}">
+            <div class="text-center mt-16 w-full">
+                <h1 class="text-5xl font-bold">검색 실패</h1>
+                <p class="py-6">입력하신 용어로 검색된 결과가 없습니다<br>다른 검색어로 다시 입력해주세요.</p>
+            </div>
+        </div>
+        <div th:if="${responsePostListDto.postList.size() > 1}" class="flex justify-center mt-10">
             <div>
                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                     <!-- 이전 페이지 존재 -->

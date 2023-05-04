@@ -111,6 +111,8 @@
                 // TODO: 검색창 내리기
                 let search = document.getElementById('search');
                 search.classList.remove('hidden')
+                let searchKeyword = document.getElementById('searchKeyword');
+                searchKeyword.focus();
             } else {
                 // TODO: 검색창 닫기 + 검색 기록 지우기
                 let search = document.getElementById('search');
@@ -135,9 +137,16 @@
         let searchBtn = document.getElementById('searchBtn');
         searchBtn.addEventListener('click', () => {
             let searchKeyword = document.getElementById('searchKeyword');
-            location.href = `?keyword=${searchKeyword.value}`;
+            location.href = `/?keyword=${searchKeyword.value}`;
         });
 
+        let searchKeywordEnter = document.getElementById('searchKeyword');
+        searchKeywordEnter.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter'){
+                let searchKeyword = document.getElementById('searchKeyword');
+                location.href = `/?keyword=${searchKeyword.value}`;
+            }
+        });
 
         let url = new URLSearchParams(location.search);
         let existKeyword = url.has('keyword');
