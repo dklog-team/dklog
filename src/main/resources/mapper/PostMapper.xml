@@ -22,6 +22,12 @@
         limit #{startIndex}, #{pageSize}
     </select>
 
+    <select id="findAllId" resultType="Long">
+        select post_id
+        from post
+        order by created_date desc;
+    </select>
+
     <select id="findById" parameterType="Long" resultType="kr.dklog.dto.PostDto">
         select post_id,
                title,

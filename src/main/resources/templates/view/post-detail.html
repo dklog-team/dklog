@@ -64,6 +64,8 @@
         </section>
         <hr class="my-10"/>
         <!-- comment -->
+        <!--목록 이동-->
+        <a th:href="@{|/post/list?postId=${responsePostDto.postId}|}" class="btn btn-block btn-ghost hover:border-1 hover:border-solid hover:border-slate-400 border-1 border-solid border-slate-400">목록으로 돌아가기</a>
     </main>
 </th:block>
 </html>

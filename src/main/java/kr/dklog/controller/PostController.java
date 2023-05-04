@@ -44,6 +44,12 @@ public class PostController {
         return "view/post-detail";
     }
 
+    @GetMapping("/list")
+    public String postList(Long postId){
+        int pageNum = postService.getPageNum(postId);
+        return "redirect:/?page=" + pageNum;
+    }
+
     @PostMapping("/upload")
     public String postWrite(RequestPostDto dto, @LoginMember SessionMember member) {
         if (member != null) {
