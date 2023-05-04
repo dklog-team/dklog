@@ -10,7 +10,7 @@
         <section>
             <h1 th:text="${responsePostDto.title}" class="text-4xl font-semibold mb-6">title</h1>
                 <div class="text-gray-500 flex items-center">
-                    <div class="w-4/5">
+                    <div class="flex items-center w-4/5">
                         <span th:text="|${responsePostDto.createdDate} 작성|">createdDate</span>
                         <span th:if="${responsePostDto.modifiedDate}" class="mx-4">|</span>
                         <span th:if="${responsePostDto.modifiedDate}" th:text="|${responsePostDto.modifiedDate} 수정|">modifiedDate</span>
@@ -22,7 +22,7 @@
                         </div>
                         <span th:text="${responsePostDto.username}">username</span>
                     </div>
-                    <div th:if="${member}" class="dropdown w-1/5 flex justify-end">
+                    <div th:if="${member} and ${member.memberId == responsePostDto.memberId}" class="dropdown w-1/5 flex justify-end">
                         <label tabindex="0" class="btn btn-ghost">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
