@@ -11,9 +11,9 @@
                 <div class="w-1/2 bg-gray-100 h-full">
                     <div class="p-10 h-full">
                         <div class="w-full bg-gray-100 mb-10">
-                            <input id="title" type="text" name="title" class="w-full text-4xl font-bold placeholder:text-gray-400 bg-gray-100 focus:outline-0" placeholder="제목을 입력해주세요" th:value="${responsePostDto} ? ${responsePostDto.getTitle()} : null" required/>
+                            <input id="title" type="text" name="title" class="w-full text-4xl font-bold placeholder:text-gray-400 bg-gray-100 focus:outline-0" placeholder="제목을 입력해주세요" th:value="${responsePostDto} ? ${responsePostDto.title} : null" required/>
                         </div>
-                        <textarea id="content" name="contentMd" class="w-full bg-gray-100 focus:outline-0" th:text="${responsePostDto} ? ${responsePostDto.getContentMd()} : null" onkeyup="printPreview()"></textarea>
+                        <textarea id="content" name="contentMd" class="w-full bg-gray-100 focus:outline-0 resize-none" th:text="${responsePostDto} ? ${responsePostDto.contentMd} : null" onkeyup="printPreview()"></textarea>
                     </div>
                 </div>
                 <div class="w-1/2 p-10">
@@ -34,7 +34,7 @@
                 </div>
                 <input type="file" id="upload-image" style="display: none" accept="image/*"/>
                 <div class="flex items-center gap-x-4">
-                    <a th:href="@{/}" type="reset" class="btn btn-sm bg-black text-white border-none">취소</a>
+                    <button id="resetBtn" class="btn btn-sm bg-black text-white border-none">취소</button>
                     <button th:unless="${responsePostDto}" id="submitBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none">저장</button>
                     <button th:if="${responsePostDto}" id="updateBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none">수정</button>
                 </div>
@@ -63,6 +63,12 @@
             let previewTitle = document.getElementById('previewTitle');
             previewTitle.textContent = e.target.value;
         })
+
+        title.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
 
         let previewContent = document.getElementById('previewContent');
         let previewScroll = document.getElementById('previewScroll');
@@ -172,12 +178,6 @@
             }, 500);
         })
 
-        onload = function () {
-            if (content.value !== null) {
-                printPreview();
-            }
-        };
-
         function appendContentHtmlToForm(writeForm) {
             let inputContentHtml = document.createElement('input');
             inputContentHtml.type = 'hidden';
@@ -207,10 +207,24 @@
 
             validateForm(writeForm);
         });
+
+        document.getElementById('resetBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            location.replace('/');
+        });
         [/]
 
         [# th:if= "${responsePostDto}" ]
-        document.getElementById('updateBtn').addEventListener('click', function (e) {
+        onload = function () {
+            let title = document.getElementById('title');
+            let previewTitle = document.getElementById('previewTitle');
+            previewTitle.innerHTML = title.value;
+            if (content.value !== null) {
+                printPreview();
+            }
+        };
+
+        document.getElementById('updateBtn').addEventListener('click', function () {
             let writeForm = document.getElementById('writeForm');
             writeForm.action = '/post/update';
 
@@ -224,6 +238,11 @@
             writeForm.appendChild(inputPostId);
 
             validateForm(writeForm);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            location.replace('/post/' + [[${responsePostDto.postId}]]);
         });
         [/]
 
