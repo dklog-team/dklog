@@ -1,5 +1,9 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <section th:fragment="comment-fragmenmt" class="mx-auto max-w-6xl px-4">
+    <div class="flex items-center mb-8 text-xl font-semibold gap-x-2">
+        <span>댓글</span>
+        <span th:text="${commentCount}" class="text-[#f9d72f]">comment count</span>
+    </div>
     <div class="mb-4 border border-gray-300 rounded-lg shadow">
         <div class="p-4 bg-white rounded-t-lg">
                 <textarea id="commentContent" rows="4" class="resize-none w-full bg-white outline-none"
@@ -29,7 +33,8 @@
                         </div>
                     </div>
                 </div>
-                <div th:if="${member.memberId == comment.memberId}" class="dropdown">
+                <div th:if="${session.member != null} and ${session.member.memberId == comment.memberId}"
+                     class="dropdown">
                     <label tabindex="0" class="btn btn-ghost btn-sm px-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor" class="w-6 h-6">
@@ -79,16 +84,22 @@
                 <p th:id="|comment${comment.commentId}|" class="whitespace-pre-wrap break-words"
                    th:text="${comment.content}">comment</p>
                 <!-- 댓글 수정 -->
-                <div th:id="|updateCommentContainer${comment.commentId}|" class="mb-4 border border-gray-300 rounded-lg shadow" style="display: none;">
+                <div th:id="|updateCommentContainer${comment.commentId}|"
+                     class="mb-4 border border-gray-300 rounded-lg shadow" style="display: none;">
                     <div class="p-4 bg-white rounded-t-lg">
-                        <textarea th:id="|updateCommentContent${comment.commentId}|" rows="4" class="resize-none w-full bg-white outline-none"
+                        <textarea th:id="|updateCommentContent${comment.commentId}|" rows="4"
+                                  class="resize-none w-full bg-white outline-none"
                                   placeholder="수정할 댓글을 작성해주세요" required></textarea>
                     </div>
                     <div class="flex items-center justify-end bg-gray-200 rounded-b-lg">
-                        <button th:id="|cancelUpdateCommentBtn${comment.commentId}|" th:onclick="|clickCancelUpdateCommentBtn(${comment.commentId})|" class="btn text-white btn-sm m-2">
+                        <button th:id="|cancelUpdateCommentBtn${comment.commentId}|"
+                                th:onclick="|clickCancelUpdateCommentBtn(${comment.commentId})|"
+                                class="btn text-white btn-sm m-2">
                             취소
                         </button>
-                        <button th:id="|updateCommentBtn${comment.commentId}|" th:onclick="|clickUpdateCommentBtn(${comment.commentId})|" class="btn btn-secondary btn-sm m-2">
+                        <button th:id="|updateCommentBtn${comment.commentId}|"
+                                th:onclick="|clickUpdateCommentBtn(${comment.commentId})|"
+                                class="btn btn-secondary btn-sm m-2">
                             수정
                         </button>
                     </div>
@@ -103,11 +114,17 @@
     <script type="text/javascript" th:src="@{/js/common/display-util.js}"></script>
     <script th:inline="javascript">
         const postId = [[${responsePostDto.postId}]]
-        const memberId = [[${member.memberId}]]
+        const member = [[${session.member}]]
 
-        // console.log(memberId)
+        console.log(member);
 
         const clickSaveCommentBtn = async () => {
+            if (member == null) {
+                alert('로그인 후에 댓글을 작성해주세요.')
+                return;
+            }
+            let memberId = member.memberId;
+
             let content = document.getElementById('commentContent').value;
             const requestData = {
                 postId,
@@ -115,16 +132,19 @@
                 memberId,
             }
             let response = await add(requestData);
+            document.getElementById('commentContent').value = '';
             console.log(response)
             let newCommentList = response.data;
             let commentContainer = document.getElementById('commentContainer');
             commentContainer.innerHTML = ``;
-            let newCommentListHtml = getNewCommentListHtml(newCommentList);
+            let newCommentListHtml = getNewCommentListHtml(newCommentList, memberId);
             commentContainer.innerHTML = newCommentListHtml;
             window.scrollTo(0, document.body.scrollHeight);
         }
 
         const clickDeleteCommentBtn = async (commentId) => {
+            let memberId = member.memberId;
+
             if (!confirm('정말 삭제하시겠습니까?')) {
                 return;
             }
@@ -167,6 +187,12 @@
         }
 
         const clickUpdateCommentBtn = async (commentId) => {
+            if (member == null) {
+                alert('로그인 후에 댓글을 작성해주세요.')
+                return;
+            }
+            let memberId = member.memberId;
+
             let content = document.getElementById(`updateCommentContent${commentId}`).value
 
             const requestData = {
@@ -178,7 +204,7 @@
             console.log(content);
             let response = await update(requestData);
             console.log(response.data);
-            
+
             let updatedContent = response.data.content;
 
             let comment = document.getElementById(`comment${commentId}`);

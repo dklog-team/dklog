@@ -60,4 +60,10 @@
         where comment_id = #{commentId}
     </update>
 
+    <select id="countBy" parameterType="Long" resultType="int">
+        select count(*)
+        from comment
+        where post_id = #{postId}
+    </select>
+
 </mapper>
