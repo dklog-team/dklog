@@ -1,4 +1,4 @@
-const getNewCommentListHtml = (newCommentList) => {
+const getNewCommentListHtml = (newCommentList, memberId) => {
     let newCommentListHtml = ``;
     newCommentList.forEach((comment) => {
         newCommentListHtml += `

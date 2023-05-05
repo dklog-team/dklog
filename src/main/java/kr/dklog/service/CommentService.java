@@ -206,4 +206,8 @@ public class CommentService {
         responseCommentDto.setWriteDate(lastWriteDate);
         return responseCommentDto;
     }
+
+    public int count(Long postId) {
+        return commentMapper.countBy(postId);
+    }
 }

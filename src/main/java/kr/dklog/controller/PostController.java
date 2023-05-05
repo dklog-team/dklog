@@ -48,6 +48,7 @@ public class PostController {
 
         model.addAttribute("responsePostDto", responsePostDto);
         model.addAttribute("responseCommentDtoList", responseCommentDtoList);
+        model.addAttribute("commentCount", commentService.count(postId));
 
         return "view/post-detail";
     }

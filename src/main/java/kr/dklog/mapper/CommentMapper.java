@@ -28,4 +28,6 @@ public interface CommentMapper {
     void deleteById(Long commentId);
 
     void updateById(RequestUpdateCommentDto commentId);
+
+    int countBy(Long postId);
 }
