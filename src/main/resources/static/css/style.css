@@ -13,3 +13,10 @@
 .textarea-h-full {
     height: calc(100% - 80px);
 }
+mark {
+    background-color: rgba(249, 215, 47, 0.3);
+}
+.inline-code {
+    background-color: rgba(2, 32, 71, 0.08);
+    border: solid 0.5px rgba(2, 32, 71, 0.15);
+}
