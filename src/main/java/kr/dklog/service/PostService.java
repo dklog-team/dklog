@@ -97,22 +97,11 @@ public class PostService {
     }
 
     private String getPreviewContent(String contentHtml) {
-        Pattern pattern = Pattern.compile("(<p>)(.*?)(\n)");
-        Matcher matcher = pattern.matcher(contentHtml);
+        String result = contentHtml
+                .replaceAll("<(/)?([a-zA-Z0-9]*)(\\s[a-zA-Z0-9]*=[^>]*)?(\\s)*(/)?>", "")
+                .replaceAll("-&gt;", "")
+                .replaceAll("&lt;/br&gt;", "");
 
-        String result = "";
-        while (matcher.find()) {
-            String group = matcher.group(2);
-            String s = group
-                    .replaceAll("(<)(.*?)(>)", "")
-                    .replaceAll("(</)(.*?)(>)", "")
-                    .replace("&lt;/br&gt;", "");
-
-            result += s + " ";
-            if (matcher.group(1) == null) {
-                break;
-            }
-        }
         return result;
     }
 

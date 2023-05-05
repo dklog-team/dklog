@@ -21,7 +21,7 @@
                         <h1 id="previewTitle"></h1>
                     </div>
                     <div id="previewScroll" class="overflow-x-hidden h-full">
-                        <div id="previewContent" class="prose min-w-full"></div>
+                        <div id="previewContent" class="prose min-w-full prose-pre:bg-[#262626] prose-pre:text-gray-300 prose-a:underline-offset-2 prose-a:decoration-yellow-400 prose-mark:text-yellow-400"></div>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,12 @@
         function printPreview() {
             const contentValue = content.value;
             previewContent.innerHTML = md.render(contentValue);
-
+            Array.prototype.forEach.call(previewContent.getElementsByTagName('code'), (code) => {
+                console.log(code.parentElement.tagName)
+                if (code.parentElement.tagName !== 'PRE') {
+                    code.classList.add('inline-code')
+                }
+            })
         }
 
         window.GV = {
