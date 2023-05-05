@@ -1,5 +1,6 @@
 package kr.dklog.service;
 
+import kr.dklog.common.exception.AlreadyAuthStudentException;
 import kr.dklog.common.exception.NotMatchAuthCodeException;
 import kr.dklog.common.exception.StudentNotFoundException;
 import kr.dklog.common.util.NcpSmsUtil;
@@ -34,6 +35,10 @@ public class AuthCodeService {
         StudentDto studentDto = studentMapper.findByPhoneNumber(requestDto.getPhoneNumber())
                 .orElseThrow(StudentNotFoundException::new);
 
+        if (studentDto.getAuthStatus().equals("Y")) {
+            throw new AlreadyAuthStudentException();
+        }
+
         studentDto.setAuthCode(getAuthCode());
         studentMapper.updateStudent(studentDto);
 
@@ -65,6 +70,9 @@ public class AuthCodeService {
         if (!requestCode.equals(originalCode)) {
             throw new NotMatchAuthCodeException();
         }
+
+        studentDto.setAuthStatus("Y");
+        studentMapper.updateStudent(studentDto);
 
         httpSession.setAttribute("studentDto", studentDto);
     }

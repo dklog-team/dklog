@@ -4,25 +4,25 @@
 <mapper namespace="kr.dklog.mapper.StudentMapper">
 
     <select id="findById" parameterType="Long" resultType="kr.dklog.dto.StudentDto">
-        select student_id, name, phone_number, semester, auth_code, github_username
+        select student_id, name, phone_number, semester, auth_code, github_username, auth_status
         from student
         where student_id = #{studentId}
     </select>
 
     <select id="findByName" parameterType="String" resultType="kr.dklog.dto.StudentDto">
-        select student_id, name, phone_number, semester, auth_code, github_username
+        select student_id, name, phone_number, semester, auth_code, github_username, auth_status
         from student
         where name = #{name}
     </select>
 
     <select id="findByPhoneNumber" parameterType="String" resultType="kr.dklog.dto.StudentDto">
-        select student_id, name, phone_number, semester, auth_code, github_username
+        select student_id, name, phone_number, semester, auth_code, github_username, auth_status
         from student
         where phone_number = #{phoneNumber}
     </select>
 
     <select id="findByGithubUsername" parameterType="String" resultType="kr.dklog.dto.StudentDto">
-        select student_id, name, phone_number, semester, auth_code, github_username
+        select student_id, name, phone_number, semester, auth_code, github_username, auth_status
         from student
         where github_username = #{githubUsername}
     </select>
@@ -33,7 +33,8 @@
             phone_number = #{phoneNumber},
             semester = #{semester},
             auth_code = #{authCode},
-            github_username = #{githubUsername}
+            github_username = #{githubUsername},
+            auth_status = #{authStatus}
         where student_id = #{studentId}
     </update>
 

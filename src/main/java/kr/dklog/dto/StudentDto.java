@@ -20,4 +20,6 @@ public class StudentDto {
     private String authCode;
 
     private String githubUsername;
+
+    private String authStatus;
 }
