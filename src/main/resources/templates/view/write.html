@@ -278,21 +278,38 @@
 
             }).then((response) => {
 
-                    console.log(response.data);
-                    console.log(response.data.imageURL);
+                console.log(response.data);
 
-                    const element = document.getElementById("content");
+                const element = document.getElementById("content");
 
-                    let imageURL = response.data.imageURL;
-                    let imageMarkdown = `![image](${imageURL})`;
+                let imageURL = response.data;
+                let imageMarkdown = `![image](${imageURL})`;
 
-                    console.log(imageMarkdown);
+                console.log(imageMarkdown);
 
-                    element.value += `\n${imageMarkdown}`;
+                let originContent = element.value;
+                let insertPosition = element.selectionStart;
 
-                    printPreview();
+                let preInsertPosition = originContent.substring(0, insertPosition);
+                let nextInsertPosition = originContent.substring(element.selectionEnd, originContent.length);
 
-                }).catch((error) => {
+                let newContent = preInsertPosition + imageMarkdown + nextInsertPosition;
+                element.value = newContent;
+
+                insertPosition = insertPosition + imageMarkdown.length;
+                element.selectionStart = insertPosition;
+                element.selectionEnd = insertPosition;
+                element.focus();
+
+                console.log(newContent)
+
+
+                console.log(insertPosition);
+
+
+                printPreview();
+
+            }).catch((error) => {
                 console.log(error);
             });
 
