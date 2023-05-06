@@ -31,6 +31,6 @@ public class ImageController {
         System.out.println(responseDto.getImageURL());
 
 
-        return ResponseEntity.ok().body(rootUrl + "/" + responseDto.getStoreName());
+        return ResponseEntity.ok().body(rootUrl + "/" + responseDto.getStoreName() + responseDto.getFileType());
     }
 }
