@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<h1>휴대폰 인증 후에 로그인 서비스를 이용해주세요.</h1>
-</body>
+<th:block th:replace="fragments/head :: head-fragment"></th:block>
+<th:block>
+    <div class="border-t-4 border-b-4 border-l-4 border-r-4 border-yellow-500 relative h-screen max-w-767 w-full leading-5 text-center py-4 px-3">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[url('../../images/background-page.png')]">
+            <div class="relative h-60">
+                <h1 class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-yellow-500 to-red-500 bg-clip-text font-Montserrat font-black text-5xl uppercase tracking-widest relative h-20">
+                    Sorry, Login Failed</h1><br>
+                <img class="mx-auto" src="../../images/login-fail.png">
+            </div><br><br><br><br><br>
+            <div>
+                <h2 class="font-kanit text-lg font-light text-slate-400 uppercase mt-0 mb-5 tracking-wider">로그인 하시려면 인증 먼저 해주세요</h2>
+                <p class="font-kanit text-base font-light text-slate-400 mt-0 mb-5">교육생 인증하러 가기 <a th:href="@{/student/auth}"
+                                                                                    class="font-kanit text-red-500 font-light no-underline border-b border-dashed border-red-500 rounded-sm">Return
+                    to homepage</a></p>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+
 </html>
