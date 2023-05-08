@@ -31,7 +31,7 @@
                              class="thumbnail-box object-cover w-48 h-48 rounded-lg mr-10 hidden md:inline-block"/>
 <!--                        <div th:if="${post.previewImage == null}" class="w-48 h-48 mr-10 rounded-lg transition duration-300 ease-out hover:-translate-y-2 hover:shadow-lg">-->
                         <div th:if="${post.previewImage == null}" class="thumbnail-box w-48 h-48 mr-10 rounded-lg hidden md:inline-block">
-                            <div th:class="${postStat.index % 2 == 0} ? 'w-48 h-48 bg-[#f9d72f] text-gray-800 text-2xl rounded-lg flex justify-center items-center' : 'w-48 h-48 bg-gray-800 text-[#f9d72f] text-2xl rounded-lg flex justify-center items-center'">
+                            <div th:class="${postStat.index % 2 == 1} ? 'w-48 h-48 bg-[#f9d72f] text-gray-800 text-2xl rounded-lg flex justify-center items-center' : 'w-48 h-48 bg-gray-800 text-[#f9d72f] text-2xl rounded-lg flex justify-center items-center'">
                                 <span class="font-bold">dk</span>
                                 <span class="font-medium">log</span>
                             </div>
