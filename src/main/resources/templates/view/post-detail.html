@@ -11,9 +11,10 @@
             <h1 th:text="${responsePostDto.title}" class="text-4xl font-semibold mb-6">title</h1>
                 <div class="text-gray-500 flex items-center">
                     <div class="flex items-center w-4/5">
-                        <span th:text="|${responsePostDto.createdDate} 작성|">createdDate</span>
-                        <span th:if="${responsePostDto.modifiedDate}" class="mx-4">|</span>
-                        <span th:if="${responsePostDto.modifiedDate}" th:text="|${responsePostDto.modifiedDate} 수정|">modifiedDate</span>
+                        <span th:text="|${responsePostDto.createdDate}|">createdDate</span>
+                        <span class="ml-1 hidden md:inline-block">작성</span>
+                        <span th:if="${responsePostDto.modifiedDate}" class="mx-4 hidden md:inline-block">|</span>
+                        <span th:if="${responsePostDto.modifiedDate}" th:text="|${responsePostDto.modifiedDate} 수정|" class="hidden md:inline-block">modifiedDate</span>
                         <span class="mx-4">|</span>
                         <div class="avatar mr-2">
                             <div class="w-6 rounded-full ring-2 ring-gray-300">

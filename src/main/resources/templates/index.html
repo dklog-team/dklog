@@ -10,13 +10,13 @@
     </script>
     <main class="mx-auto max-w-6xl py-20 px-4">
         <section>
-            <h2 class="text-4xl align-middle mb-4"
+            <h2 class="text-3xl md:text4xl align-middle mb-4"
                 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                 <span class="font-bold">dk</span>
                 <span class="font-medium">techin</span>
                 <span class="font-medium">교육생들의 이야기</span>
             </h2>
-            <h2 class="text-xl text-gray-500"
+            <h2 class="text-lg md:text-lg text-gray-500"
                 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
                 <span>dktehin developer training course tech blog</span>
             </h2>
@@ -28,9 +28,9 @@
                 <a th:href="@{|/post/${post.postId}|}" class="cursor-pointer">
                     <div class="post-container flex items-center py-10">
                         <img th:if="${post.previewImage != null}" th:src="${post.previewImage}"
-                             class="thumbnail-box object-cover w-48 h-48 rounded-lg mr-10"/>
+                             class="thumbnail-box object-cover w-48 h-48 rounded-lg mr-10 hidden md:inline-block"/>
 <!--                        <div th:if="${post.previewImage == null}" class="w-48 h-48 mr-10 rounded-lg transition duration-300 ease-out hover:-translate-y-2 hover:shadow-lg">-->
-                        <div th:if="${post.previewImage == null}" class="thumbnail-box w-48 h-48 mr-10 rounded-lg">
+                        <div th:if="${post.previewImage == null}" class="thumbnail-box w-48 h-48 mr-10 rounded-lg hidden md:inline-block">
                             <div th:class="${postStat.index % 2 == 0} ? 'w-48 h-48 bg-[#f9d72f] text-gray-800 text-2xl rounded-lg flex justify-center items-center' : 'w-48 h-48 bg-gray-800 text-[#f9d72f] text-2xl rounded-lg flex justify-center items-center'">
                                 <span class="font-bold">dk</span>
                                 <span class="font-medium">log</span>
@@ -103,7 +103,7 @@
                            th:href="@{|?page=${page}|}"
                            aria-current="page"
                            @click="clickPage(page + pagingUtil.startPage - 1)"
-                           class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">
+                           class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                             page
                         </a>
                     </span>

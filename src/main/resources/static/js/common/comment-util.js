@@ -15,11 +15,13 @@ const getNewCommentListHtml = (newCommentList, memberId) => {
                                 <span>${comment.username}</span>
                             </div>
                             <div>
-                                <span class="text-sm text-gray-400">${comment.writeDate}</span>
+                                <span id="commentDate${comment.commentId}" class="text-sm text-gray-400">${comment.writeDate}</span>
                             </div>
                         </div>
                     </div>
                 `;
+        console.log('memberId: ', memberId);
+        console.log('comment memberId: ', comment.memberId);
         if (memberId == comment.memberId) {
             newCommentListHtml += `
                     <div class="dropdown">
@@ -30,7 +32,7 @@ const getNewCommentListHtml = (newCommentList, memberId) => {
                         </label>
                         <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-auto">
                             <li>
-                                <a id="updateCommentBtn${comment.commentId}" class="text-gray-700 block px-4 py-2 text-sm flex" role="menuitem" tabindex="-1" id="postEditBtn">
+                                <a id="updateCommentBtn${comment.commentId}" onclick="clickOpenUpdateCommentContainerBtn(${comment.commentId})" class="text-gray-700 block px-4 py-2 text-sm flex" role="menuitem" tabindex="-1" id="postEditBtn">
                                     <div class="w-1/5">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -60,7 +62,28 @@ const getNewCommentListHtml = (newCommentList, memberId) => {
         newCommentListHtml += `
                 </div>
                 <div class="mb-8">
-                    <p class="whitespace-pre-wrap break-words">${comment.content}</p>
+                    <p id="comment${comment.commentId}" class="whitespace-pre-wrap break-words">${comment.content}</p>
+                    <!-- 댓글 수정 -->
+                    <div id="updateCommentContainer${comment.commentId}"
+                         class="mb-4 border border-gray-300 rounded-lg shadow" style="display: none;">
+                        <div class="p-4 bg-white rounded-t-lg">
+                            <textarea id="updateCommentContent${comment.commentId}" rows="4"
+                                      class="resize-none w-full bg-white outline-none"
+                                      placeholder="수정할 댓글을 작성해주세요" required></textarea>
+                        </div>
+                        <div class="flex items-center justify-end bg-gray-200 rounded-b-lg">
+                            <button id="cancelUpdateCommentBtn${comment.commentId}"
+                                    onclick="clickCancelUpdateCommentBtn(${comment.commentId})"
+                                    class="btn text-white btn-sm m-2">
+                                취소
+                            </button>
+                            <button id="updateCommentBtn${comment.commentId}"
+                                    onclick="clickUpdateCommentBtn(${comment.commentId})"
+                                    class="btn btn-secondary btn-sm m-2">
+                                수정
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <hr/>
             </div>
