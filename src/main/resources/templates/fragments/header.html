@@ -131,7 +131,7 @@
                         <!-- sign in modal -->
                         <div id="signInModal2" class="modal">
                             <div class="modal-box w-auto">
-                                <label for="signIn" class="btn btn-ghost btn-sm btn-circle absolute right-2 top-2">✕</label>
+                                <label for="signIn2" class="btn btn-ghost btn-sm btn-circle absolute right-2 top-2">✕</label>
                                 <div class="text-center">
                                     <div class="text-4xl align-middle py-10">
                                         <span class="font-bold">dk</span>
@@ -213,7 +213,7 @@
     </div>
     <script th:inline="javascript">
         const toggleSearch = (e) => {
-            console.log(e.target.checked);
+            // console.log(e.target.checked);
             if (e.target.checked) {
                 // TODO: 검색창 내리기
                 let search = document.getElementById('search');
@@ -258,8 +258,8 @@
         let url = new URLSearchParams(location.search);
         let existKeyword = url.has('keyword');
         let keyword = url.get('keyword');
-        console.log(existKeyword);
-        console.log(keyword);
+        // console.log(existKeyword);
+        // console.log(keyword);
         if (existKeyword) {
             let search = document.getElementById('search');
             search.classList.remove('hidden');

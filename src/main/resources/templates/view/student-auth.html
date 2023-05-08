@@ -57,7 +57,7 @@
                 phoneNumber
             }
             const response = await getAuthCode(requestData)
-            console.log(response)
+            // console.log(response)
             alert(response.data.message)
 
             const authCodeForm = document.getElementById('authCodeForm')
@@ -83,7 +83,7 @@
                 studentId,
                 authCode
             }
-            console.log(requestData)
+            // console.log(requestData)
             let response = await submit(requestData);
             if (response.status === 200) {
                 alert('인증 완료. 로그인 후에 서비스를 이용해보세요!');

@@ -28,8 +28,6 @@ public class ImageController {
         ResponseUploadResultDto responseDto = fileUploadService.uploadImage(requestDto);
 
         responseDto.setImageURL(responseDto.getLocation() + "/"+ responseDto.getStoreName() + responseDto.getFileType());
-        System.out.println(responseDto.getImageURL());
-
 
         return ResponseEntity.ok().body(rootUrl + "/" + responseDto.getStoreName() + responseDto.getFileType());
     }

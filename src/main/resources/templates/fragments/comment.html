@@ -116,7 +116,7 @@
         const postId = [[${responsePostDto.postId}]]
         const member = [[${session.member}]]
 
-        console.log(member);
+        // console.log(member);
 
         const clickSaveCommentBtn = async () => {
             if (member == null) {
@@ -137,7 +137,7 @@
             }
             let response = await add(requestData);
             document.getElementById('commentContent').value = '';
-            console.log(response)
+            // console.log(response)
             let newCommentList = response.data;
             let commentContainer = document.getElementById('commentContainer');
             commentContainer.innerHTML = ``;
@@ -154,13 +154,13 @@
             if (!confirm('정말 삭제하시겠습니까?')) {
                 return;
             }
-            console.log('memberId: ', memberId);
+            // console.log('memberId: ', memberId);
             const requestData = {
                 postId,
                 commentId,
                 memberId,
             }
-            console.log(requestData);
+            // console.log(requestData);
             let response = await remove(requestData);
             let newCommentList = response.data;
             let commentContainer = document.getElementById('commentContainer');
@@ -172,9 +172,9 @@
         }
 
         const clickOpenUpdateCommentContainerBtn = async (commentId) => {
-            console.log(commentId)
+            // console.log(commentId)
             let comment = document.getElementById(`comment${commentId}`);
-            console.log(comment)
+            // console.log(comment)
             displayToggle(comment);
 
             displayToggle(document.getElementById(`updateCommentContainer${commentId}`));
@@ -215,9 +215,9 @@
                 content,
                 memberId,
             }
-            console.log(content);
+            // console.log(content);
             let response = await update(requestData);
-            console.log(response.data);
+            // console.log(response.data);
 
             let updatedContent = response.data.content;
             let writeDate = response.data.writeDate;
