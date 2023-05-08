@@ -129,7 +129,7 @@
             const contentValue = content.value;
             previewContent.innerHTML = md.render(contentValue);
             Array.prototype.forEach.call(previewContent.getElementsByTagName('code'), (code) => {
-                console.log(code.parentElement.tagName)
+                // console.log(code.parentElement.tagName)
                 if (code.parentElement.tagName !== 'PRE') {
                     code.classList.add('inline-code')
                 }

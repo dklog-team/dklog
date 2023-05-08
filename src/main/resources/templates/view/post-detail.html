@@ -71,7 +71,7 @@
     <script th:inline="javascript">
         let postContent = document.getElementById('postContent');
         Array.prototype.forEach.call(postContent.getElementsByTagName('code'), (code) => {
-            console.log(code.parentElement.tagName)
+            // console.log(code.parentElement.tagName)
             if (code.parentElement.tagName !== 'PRE') {
                 code.classList.add('inline-code')
             }

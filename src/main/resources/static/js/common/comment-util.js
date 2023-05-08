@@ -20,8 +20,6 @@ const getNewCommentListHtml = (newCommentList, memberId) => {
                         </div>
                     </div>
                 `;
-        console.log('memberId: ', memberId);
-        console.log('comment memberId: ', comment.memberId);
         if (memberId == comment.memberId) {
             newCommentListHtml += `
                     <div class="dropdown">

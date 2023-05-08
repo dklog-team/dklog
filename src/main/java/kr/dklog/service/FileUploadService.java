@@ -24,9 +24,6 @@ public class FileUploadService {
     private final ImageMapper imageMapper;
 
     public ResponseUploadResultDto uploadImage(RequestUploadImageDto requestDto) {
-
-        System.out.println("imageUploadPath: " + imageUploadPath);
-
         MultipartFile image = requestDto.getImage();
 
 
@@ -53,9 +50,7 @@ public class FileUploadService {
                 default:
                     throw new IllegalArgumentException("허용되지 않은 파일 형식입니다.");
             }
-            System.out.println("imageUploadPath: " + imageUploadPath);
             responseDto.setFileType(imgExtension);
-            System.out.println("imageUploadPath: " + imageUploadPath);
         }
 
         String newImgName = UUID.randomUUID().toString();
