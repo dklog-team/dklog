@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <th:block th:replace="fragments/head :: head-fragment"></th:block>
 <th:block>
-    <div class="border-t-4 border-b-4 border-l-4 border-r-4 border-yellow-500 relative h-screen max-w-767 w-full leading-5 text-center py-4 px-3">
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[url('../../images/background-page.png')]">
+    <div class="border-t-4 border-b-4 border-l-4 border-r-4 border-[#f9d72f] relative h-screen max-w-767 w-full leading-5 text-center py-4 px-3">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
             <div class="relative h-60">
-                <h1 class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-yellow-500 to-red-500 bg-clip-text font-Montserrat font-black text-5xl uppercase tracking-widest relative h-20">
+                <h1 class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-transparent bg-gradient-to-r from-[#f9d72f] to-yellow-300 bg-clip-text font-Montserrat font-black text-5xl uppercase tracking-widest relative h-20">
                     Sorry, Login Failed</h1><br>
                 <img class="mx-auto" src="../../images/login-fail.png">
-            </div><br><br><br><br><br>
+            </div>
+            <br><br><br><br><br>
             <div>
-                <h2 class="font-kanit text-lg font-light text-slate-400 uppercase mt-0 mb-5 tracking-wider">로그인 하시려면 인증 먼저 해주세요</h2>
-                <p class="font-kanit text-base font-light text-slate-400 mt-0 mb-5">교육생 인증하러 가기 <a th:href="@{/student/auth}"
-                                                                                    class="font-kanit text-red-500 font-light no-underline border-b border-dashed border-red-500 rounded-sm">Return
-                    to homepage</a></p>
+                <h2 class="text-lg font-light text-slate-400 uppercase mt-0 mb-5 tracking-wider">로그인 하시려면 인증
+                    먼저 해주세요</h2>
+                <p class="text-base font-light text-slate-400 mt-0 mb-5">교육생 인증하러 가기 : &nbsp;&nbsp;&nbsp;<a
+                        th:href="@{/student/auth}"
+                        class="text-black font-light hover:opacity-25 no-underline border-b border-solid border-[#f9d72f] rounded-sm">
+                        Return to authentication
+                </a></p>
             </div>
         </div>
     </div>
 </th:block>
-
-
 </html>
