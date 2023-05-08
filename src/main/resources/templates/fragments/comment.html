@@ -29,7 +29,7 @@
                             <span th:text="${comment.username}">username</span>
                         </div>
                         <div>
-                            <span th:text="${comment.writeDate}" class="text-sm text-gray-400">lastWriteDate</span>
+                            <span th:text="${comment.writeDate}" th:id="|commentDate${comment.commentId}|" class="text-sm text-gray-400">lastWriteDate</span>
                         </div>
                     </div>
                 </div>
@@ -165,14 +165,16 @@
             let newCommentList = response.data;
             let commentContainer = document.getElementById('commentContainer');
             commentContainer.innerHTML = ``;
-            let newCommentListHtml = getNewCommentListHtml(newCommentList);
+            let newCommentListHtml = getNewCommentListHtml(newCommentList, memberId);
             commentContainer.innerHTML = newCommentListHtml;
             let commentCount = document.getElementById('commentCount');
             commentCount.textContent = newCommentList.length;
         }
 
         const clickOpenUpdateCommentContainerBtn = async (commentId) => {
+            console.log(commentId)
             let comment = document.getElementById(`comment${commentId}`);
+            console.log(comment)
             displayToggle(comment);
 
             displayToggle(document.getElementById(`updateCommentContainer${commentId}`));
@@ -218,10 +220,13 @@
             console.log(response.data);
 
             let updatedContent = response.data.content;
+            let writeDate = response.data.writeDate;
 
             let comment = document.getElementById(`comment${commentId}`);
+            let commentDate = document.getElementById(`commentDate${commentId}`);
             displayToggle(comment);
             comment.textContent = updatedContent;
+            commentDate.textContent = writeDate
 
             displayToggle(document.getElementById(`updateCommentContainer${commentId}`));
 
