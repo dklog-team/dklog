@@ -24,6 +24,7 @@
                     <input id="toggleSearchBtn" type="checkbox" hidden/>
                 </div>
                 <div th:if="${session.member == null}" class="flex justify-center items-center gap-x-4">
+                    <a th:href="@{/tutorial}" class="btn btn-ghost btn-sm">마크다운 체험</a>
                     <!-- sign in -->
                     <label for="signIn" class="btn btn-secondary btn-sm">로그인</label>
                     <input type="checkbox" id="signIn" class="modal-toggle"/>
@@ -73,7 +74,8 @@
                                 </svg>
                             </label>
                             <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-32">
-                                <li><a id="logoutBtn" class="btn btn-ghost btn-sm p-0.5 " th:href="@{/logout}">로그아웃</a></li>
+                                <li><a th:href="@{/tutorial}" class="btn btn-ghost btn-sm p-0.5">마크다운 체험</a></li>
+                                <li><a id="logoutBtn" class="btn btn-ghost btn-sm p-0.5" th:href="@{/logout}">로그아웃</a></li>
                             </ul>
                         </div>
                     </div>
