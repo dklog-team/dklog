@@ -81,8 +81,13 @@ public class AuthCodeService {
         Random generator = new Random();
         generator.setSeed(System.currentTimeMillis());
 
-        String phoneAuthCode = String.valueOf(generator.nextInt(1000000) % 1000000);
+        int len = 5;
+        String result = "";
+        result += Integer.toString(generator.nextInt(8) + 1);
+        for (int i = 0; i < len; i++) {
+            result += Integer.toString(generator.nextInt(9));
+        }
 
-        return phoneAuthCode;
+        return result;
     }
 }
