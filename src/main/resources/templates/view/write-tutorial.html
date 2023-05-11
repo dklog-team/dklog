@@ -8,7 +8,7 @@
     <main>
         <form id="writeForm" method="post" action="/post/upload" class="h-full h-full">
             <div id="contentContainer" class="w-full flex justify-between">
-                <div class="w-1/2 bg-gray-100 h-full">
+                <div class="w-full md:w-1/2 bg-gray-100 h-full">
                     <div class="p-10 h-full">
                         <div class="w-full bg-gray-100 mb-10">
                             <input id="title" type="text" name="title" class="w-full text-4xl font-bold placeholder:text-gray-400 bg-gray-100 focus:outline-0" placeholder="제목을 입력해주세요" th:value="${responsePostDto} ? ${responsePostDto.title} : null" required/>
@@ -16,7 +16,7 @@
                         <textarea id="content" name="contentMd" class="w-full bg-gray-100 focus:outline-0 resize-none" th:text="${responsePostDto} ? ${responsePostDto.contentMd} : null" onkeyup="printPreviewContent()"></textarea>
                     </div>
                 </div>
-                <div class="w-1/2 p-10">
+                <div class="hidden md:block w-1/2 p-10">
                     <div class="text-5xl font-bold w-full mb-10">
                         <h1 id="previewTitle"></h1>
                     </div>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div id="btnContainer" class="w-1/2 px-10 py-5 bg-gray-200 inset-x-0 bottom-0 flex justify-between items-center">
+            <div id="btnContainer" class="w-full md:w-1/2 px-10 py-5 bg-gray-200 inset-x-0 bottom-0 flex justify-between items-center">
                 <div id="btn-image-upload" class="transition p-1 flex items-center text-gray-700 gap-x-2 rounded-md cursor-pointer hover:bg-gray-500 hover:text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
@@ -34,8 +34,24 @@
                 </div>
                 <input type="file" id="upload-image" style="display: none" accept="image/*"/>
                 <div class="flex items-center gap-x-4">
+                    <!-- The button to open modal -->
+                    <label for="previewModal" class="btn btn-ghost btn-sm flex md:hidden">미리보기</label>
+
+                    <!-- Put this part before </body> tag -->
+                    <input type="checkbox" id="previewModal" class="modal-toggle" />
+                    <div class="modal">
+                        <div class="modal-box relative">
+                            <label for="previewModal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+                            <div class="block md:hidden w-full p-1">
+                                <div class="text-5xl font-bold w-full mb-10">
+                                    <h1 id="previewTitleModal"></h1>
+                                </div>
+                                <div id="previewContentModal" class="prose min-w-full prose-pre:bg-[#262626] prose-pre:text-gray-300 prose-a:underline-offset-2 prose-a:decoration-yellow-400 prose-mark:text-yellow-400"></div>
+                            </div>
+                        </div>
+                    </div>
                     <button id="clearBtn" class="btn btn-sm text-black btn-secondary">초기화</button>
-                    <button id="resetBtn" class="btn btn-sm bg-black text-white border-none">메인으로</button>
+                    <button id="resetBtn" class="btn btn-sm bg-black text-white border-none">홈으로</button>
                 </div>
             </div>
         </form>
@@ -134,6 +150,19 @@
                     code.classList.add('inline-code')
                 }
             })
+
+            let previewContentModal = document.getElementById('previewContentModal');
+            let previewTitleModal = document.getElementById('previewTitleModal');
+
+            previewContentModal.innerHTML = previewContent.innerHTML;
+            previewTitleModal.textContent = document.getElementById('title').value;
+
+            // Array.prototype.forEach.call(previewContent.getElementsByTagName('code'), (code) => {
+            //     // console.log(code.parentElement.tagName)
+            //     if (code.parentElement.tagName !== 'PRE') {
+            //         code.classList.add('inline-code')
+            //     }
+            // })
         }
 
         window.GV = {
@@ -258,6 +287,12 @@
             printPreviewTitle();
             printPreviewContent();
         };
+
+        let previewModal = document.getElementById('previewModal');
+        previewModal.addEventListener('click', () => {
+            // console.log('modal');
+            printPreview();
+        })
     </script>
 </th:block>
 </html>
