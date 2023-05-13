@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @ControllerAdvice
 public class ExceptionController {
@@ -19,7 +21,10 @@ public class ExceptionController {
     public ResponseEntity<ResponseErrorDto> runtime(RuntimeException e) {
         ResponseErrorDto responseErrorDto = new ResponseErrorDto("400", e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseErrorDto);
+        ResponseEntity<ResponseErrorDto> response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseErrorDto);
+        responseLog(response, response.getBody().toString(), 0);
+
+        return response;
     }
 
     @ResponseBody
@@ -38,5 +43,15 @@ public class ExceptionController {
         ResponseErrorDto responseErrorDto = new ResponseErrorDto("500", e.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseErrorDto);
+    }
+
+    private void responseLog(ResponseEntity response, String dataLog, long totalTimeMillis) {
+        log.info("======================================================================================");
+        log.info("Response [ {} ]", LocalDateTime.now());
+        log.info("======================================================================================");
+        log.info("process time: {}", totalTimeMillis);
+        log.info("response status: {}", response.getStatusCode());
+        log.info("response data: {}", dataLog);
+        log.info("======================================================================================");
     }
 }

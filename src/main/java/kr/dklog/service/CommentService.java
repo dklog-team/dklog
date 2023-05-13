@@ -137,13 +137,13 @@ public class CommentService {
 
     public List<ResponseCommentDto> delete(RequestDeleteCommentDto requestDto, SessionMember sessionMember) {
         postMapper.findById(requestDto.getPostId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
         commentMapper.findById(requestDto.getCommentId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
 
         memberMapper.findById(requestDto.getMemberId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
 
         if (!sessionMember.getMemberId().equals(requestDto.getMemberId())) {
             throw new RuntimeException("본인이 작성한 댓글만 삭제할 수 있습니다.");
@@ -155,13 +155,13 @@ public class CommentService {
 
     public ResponseCommentDto update(RequestUpdateCommentDto requestDto, SessionMember sessionMember) {
         postMapper.findById(requestDto.getPostId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
         commentMapper.findById(requestDto.getCommentId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
 
         memberMapper.findById(requestDto.getMemberId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
 
         if (!sessionMember.getMemberId().equals(requestDto.getMemberId())) {
             throw new RuntimeException("본인이 작성한 댓글만 삭제할 수 있습니다.");
@@ -172,7 +172,7 @@ public class CommentService {
         commentMapper.updateById(requestDto);
 
         CommentDto commentDto = commentMapper.findById(requestDto.getCommentId())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
 
         LocalDateTime now = LocalDateTime.now();
         ResponseCommentDto responseCommentDto = new ResponseCommentDto();
