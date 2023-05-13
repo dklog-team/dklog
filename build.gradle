@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr'
-version = '20230511-01'
+version = '20230514-01'
 sourceCompatibility = '11'
 
 configurations {
