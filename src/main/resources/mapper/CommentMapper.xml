@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.dklog.mapper.CommentMapper">
+
+    <select id="selectComment" resultType="kr.dklog.dto.CommentDto" parameterType="java.lang.Integer">
+        SELECT comment_id, content, created_date, modified_date ,post_id, member_id
+        FROM comment
+        WHERE post_id = ${postId}
+        ORDER BY comment_id DESC
+    </select>
+
+    <insert id="insertComment" parameterType="kr.dklog.dto.CommentDto">
+        INSERT INTO comment(content, created_date, member_id, post_id)
+        VALUES (#{content}, #{createdDate}, #{memberId}, #{postId})
+    </insert>
+
+    <update id="updateComment" parameterType="kr.dklog.dto.CommentDto">
+        UPDATE comment
+        SET modified_date = #{modifiedDate}, content = #{content}
+        WHERE comment_id = #{commentId} AND member_id = #{memberId}
+    </update>
+
+    <delete id="deleteComment" parameterType="kr.dklog.dto.CommentDto">
+        DELETE FROM comment
+        WHERE comment_id = #{commentId} AND member_id = #{memberId}
+    </delete>
+
+    <select id="insertedCommentId" resultType="java.lang.Long">
+        SELECT MAX(comment_id) AS comment_id
+        FROM comment
+    </select>
+
+    <select id="findAllByPostId" parameterType="Long" resultType="kr.dklog.dto.CommentDto">
+        select comment_id, content, c.created_date, c.modified_date, c.member_id, c.post_id, username, picture
+        from comment c
+                 join post p on c.post_id = p.post_id
+                 join member m on c.member_id = m.member_id
+        where c.post_id = #{postId}
+        order by c.created_date
+    </select>
+
+    <insert id="save" parameterType="kr.dklog.dto.CommentDto" useGeneratedKeys="true" keyColumn="comment_id" keyProperty="commentId">
+        insert into comment(comment_id, content, created_date, modified_date, member_id, post_id)
+        values (null, #{content}, #{createdDate}, null, #{memberId}, #{postId})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="kr.dklog.dto.CommentDto">
+        select *
+        from comment
+        where comment_id = #{commentId}
+    </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from comment where comment_id = #{commentId}
+    </delete>
+
+    <update id="updateById" parameterType="kr.dklog.dto.request.RequestUpdateCommentDto">
+        update comment
+        set content = #{content}, modified_date = #{modifiedDate}
+        where comment_id = #{commentId}
+    </update>
+
+    <select id="countBy" parameterType="Long" resultType="int">
+        select count(*)
+        from comment
+        where post_id = #{postId}
+    </select>
+
+</mapper>

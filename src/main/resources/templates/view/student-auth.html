@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default-layout}"
+>
+<th:block layout:fragment="content">
+    <main class="mx-auto max-w-6xl py-10 flex items-center">
+        <div class="card w-max max-w-lg shadow-xl mx-auto border border-gray-300">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <h3 class="text-4xl align-middle mb-2">
+                        <span class="font-bold">dk</span>
+                        <span class="font-medium">techin</span>
+                    </h3>
+                    <p class="text-lg text-gray-500">교육생 인증</p>
+                </div>
+                <div class="form-control">
+                    <label class="label" for="name">
+                        <span class="label-text">이름</span>
+                    </label>
+                    <div class="flex justify-start">
+                        <input id="name" type="text" placeholder="홍길동"
+                               class="input input-bordered w-full"/>
+                    </div>
+                    <label class="label" for="phoneNumber">
+                        <span class="label-text">휴대폰 번호</span>
+                    </label>
+                    <div class="flex justify-start items-center gap-x-4">
+                        <input id="phoneNumber" type="text" placeholder="01012345678"
+                               class="input input-bordered"/>
+                        <button id="getAuthCodeBtn" class="btn btn-secondary">인증번호 받기</button>
+                    </div>
+                    <div id="authCodeForm" class="form-control hidden">
+                        <label class="label" for="authCode">
+                            <span class="label-text">인증번호</span>
+                        </label>
+                        <input id="authCode" type="text" placeholder="인증번호 6자리 입력"
+                               class="input input-bordered"/>
+                        <button id="submitAuthCodeBtn" class="btn text-white mt-4">확인</button>
+                    </div>
+                    <input id="isAuthPhoneNumber" type="hidden" value="false"/>
+                    <input id="studentId" type="hidden"/>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="text/javascript" th:src="@{/js/common/main-h-full.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/core/request.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/student.js}"></script>
+    <script>
+        const clickAuthCodeBtn = async () => {
+            const phoneNumber = document.getElementById('phoneNumber').value
+            const name = document.getElementById('name').value
+            const requestData = {
+                name,
+                phoneNumber
+            }
+            const response = await getAuthCode(requestData)
+            // console.log(response)
+            alert(response.data.message)
+
+            const authCodeForm = document.getElementById('authCodeForm')
+            authCodeForm.classList.remove('hidden')
+
+            const isAuthPhoneNumber = document.getElementById('isAuthPhoneNumber')
+            isAuthPhoneNumber.value = true
+
+            const studentId = document.getElementById('studentId')
+            studentId.value = response.data.studentId
+        }
+
+        const clickSubmitAuthCodeBtn = async () => {
+            const isAuthPhoneNumber = document.getElementById('isAuthPhoneNumber')
+            if (isAuthPhoneNumber.value === 'false') {
+                alert('유효하지 않은 휴대폰 번호입니다.')
+                return;
+            }
+            const authCode = document.getElementById('authCode').value
+            const studentId = document.getElementById('studentId').value
+
+            const requestData = {
+                studentId,
+                authCode
+            }
+            // console.log(requestData)
+            let response = await submit(requestData);
+            if (response.status === 200) {
+                alert('인증 완료. 로그인 후에 서비스를 이용해보세요!');
+            }
+            location.href = '/'
+        }
+
+        // 인증번호 받기 버튼
+        const getAuthCodeBtn = document.getElementById('getAuthCodeBtn')
+        getAuthCodeBtn.addEventListener('click', clickAuthCodeBtn)
+
+        // 확인 버튼
+        const submitAuthCodeBtn = document.getElementById('submitAuthCodeBtn')
+        submitAuthCodeBtn.addEventListener('click', clickSubmitAuthCodeBtn)
+    </script>
+</th:block>
+</html>

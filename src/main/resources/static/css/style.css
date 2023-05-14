@@ -1,0 +1,50 @@
+.main-h-full {
+    height: calc(100% - 69px - 239px);
+}
+
+.content-h-full {
+    height: calc(100% - 72px);
+}
+
+.content-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.textarea-h-full {
+    height: calc(100% - 80px);
+}
+
+mark {
+    background-color: rgba(249, 215, 47, 0.3);
+}
+
+.inline-code {
+    background-color: rgba(2, 32, 71, 0.08);
+    border: solid 0.5px rgba(2, 32, 71, 0.15);
+}
+
+.thumbnail-box {
+    transition: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+
+.title {
+    transition: 0.3s;
+    transition-timing-function: ease-in-out;
+}
+
+.post-container:hover .thumbnail-box {
+    transition: 0.3s;
+    transition-timing-function: ease-in-out;
+    box-shadow: 3px 3px 15px #bdbdbd;
+    transform: translateY(-0.7em);
+}
+
+.post-container:hover .title {
+    transition: 0.3s;
+    transition-timing-function: ease-in-out;
+    color: #f9d72f
+}

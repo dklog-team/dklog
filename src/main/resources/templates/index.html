@@ -5,6 +5,131 @@
       layout:decorate="~{layouts/default-layout}"
 >
 <th:block layout:fragment="content">
-
+    <script>
+        AOS.init();
+    </script>
+    <main class="mx-auto max-w-6xl py-20 px-4">
+        <section>
+            <h2 class="text-3xl md:text-4xl align-middle mb-4"
+                data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                <span class="font-bold">dk</span>
+                <span class="font-medium">techin</span>
+                <span class="font-medium">교육생들의 이야기</span>
+            </h2>
+            <h2 class="text-lg md:text-xl text-gray-500"
+                data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <span>dktehin developer training course tech blog</span>
+            </h2>
+        </section>
+        <section class="mt-20"
+                 data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+            <hr/>
+            <div th:each="post, postStat: ${responsePostListDto.postList}">
+                <a th:href="@{|/post/${post.postId}|}" class="cursor-pointer">
+                    <div class="post-container flex items-center py-10">
+                        <img th:if="${post.previewImage != null}" th:src="${post.previewImage}"
+                             class="thumbnail-box object-cover w-48 h-48 rounded-lg mr-10 hidden md:inline-block"/>
+<!--                        <div th:if="${post.previewImage == null}" class="w-48 h-48 mr-10 rounded-lg transition duration-300 ease-out hover:-translate-y-2 hover:shadow-lg">-->
+                        <div th:if="${post.previewImage == null}" class="thumbnail-box w-48 h-48 mr-10 rounded-lg hidden md:inline-block">
+                            <div th:class="${postStat.index % 2 == 1} ? 'w-48 h-48 bg-[#f9d72f] text-gray-800 text-2xl rounded-lg flex justify-center items-center' : 'w-48 h-48 bg-gray-800 text-[#f9d72f] text-2xl rounded-lg flex justify-center items-center'">
+                                <span class="font-bold">dk</span>
+                                <span class="font-medium">log</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h1 th:text="${post.title}" class="title text-xl font-bold mb-6">title</h1>
+                            <div class="content-preview mb-6">
+                                <p th:text="${post.previewContent}" class="text-gray-700">content</p>
+                            </div>
+                            <div class="text-gray-500 flex items-center">
+                                <span th:text="${post.createdDate}">createdDate</span>
+                                <span class="mx-4">|</span>
+                                <div class="avatar mr-2">
+                                    <div class="w-6 rounded-full ring-2 ring-gray-300">
+                                        <img th:src="${post.picture}"/>
+                                    </div>
+                                </div>
+                                <span th:text="${post.username}">username</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <hr/>
+            </div>
+        </section>
+        <!-- empty post list -->
+        <div th:if="${responsePostListDto.postList.size() < 1}"
+             data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+            <div class="text-center mt-16 w-full">
+                <h1 class="text-5xl font-bold">검색 실패</h1>
+                <p class="py-6">입력하신 용어로 검색된 결과가 없습니다<br>다른 검색어로 다시 입력해주세요.</p>
+            </div>
+        </div>
+        <!-- pagination -->
+        <div th:if="${responsePostListDto.postList.size() > 1}" class="flex justify-center mt-10">
+            <div>
+                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                    <!-- 이전 페이지 존재 -->
+                    <a th:if="${responsePostListDto.pagingUtil.startPage == responsePostListDto.pagingUtil.pageNumber && !responsePostListDto.pagingUtil.existPrePageGroup}"
+                       class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0">
+                        <span class="sr-only">Previous</span>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                  d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <a th:unless="${responsePostListDto.pagingUtil.startPage == responsePostListDto.pagingUtil.pageNumber && !responsePostListDto.pagingUtil.existPrePageGroup}"
+                       th:href="@{|?page=${responsePostListDto.pagingUtil.pageNumber - 1}|}"
+                       class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                        <span class="sr-only">Previous</span>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                  d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <!-- 페이지 번호 -->
+                    <span th:each="page : ${#numbers.sequence(responsePostListDto.pagingUtil.startPage, responsePostListDto.pagingUtil.endPage)}">
+                        <a th:if="${responsePostListDto.pagingUtil.pageNumber == page}"
+                           th:text="${page}"
+                           th:href="@{|?page=${page}|}"
+                           @click="clickPage(page + pagingUtil.st`artPage - 1)"
+                           class="relative z-10 inline-flex items-center bg-[#f9d72f] px-4 py-2 text-sm font-semibold text-black focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-700">
+                            page
+                        </a>
+                        <a th:unless="${responsePostListDto.pagingUtil.pageNumber == page}"
+                           th:text="${page}"
+                           th:href="@{|?page=${page}|}"
+                           aria-current="page"
+                           @click="clickPage(page + pagingUtil.startPage - 1)"
+                           class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            page
+                        </a>
+                    </span>
+                    <!-- 다음 페이지 존재 -->
+                    <a th:if="${responsePostListDto.pagingUtil.endPage == responsePostListDto.pagingUtil.pageNumber && !responsePostListDto.pagingUtil.existNextPageGroup}"
+                       class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0">
+                        <span class="sr-only">Next</span>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                    <a th:unless="${responsePostListDto.pagingUtil.endPage == responsePostListDto.pagingUtil.pageNumber && !responsePostListDto.pagingUtil.existNextPageGroup}"
+                       th:href="@{|?page=${responsePostListDto.pagingUtil.pageNumber + 1}|}"
+                       class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                        <span class="sr-only">Next</span>
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </main>
 </th:block>
 </html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.PostMapper">
+
+    <select id="findAll" parameterType="kr.dklog.dto.common.ResponseListDto" resultType="kr.dklog.dto.PostDto">
+        select post_id,
+               title,
+               content_md,
+               content_html,
+               created_date,
+               modified_date,
+               m.member_id,
+               username,
+               picture
+        from post p
+                 join member m on p.member_id = m.member_id
+        <if test="keyword != null">
+            where title like '%${keyword}%' or content_md like '%${keyword}%'
+        </if>
+        order by created_date desc
+        limit #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="findAllId" resultType="Long">
+        select post_id
+        from post
+        order by created_date desc;
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="kr.dklog.dto.PostDto">
+        select post_id,
+               title,
+               content_md,
+               content_html,
+               created_date,
+               modified_date,
+               m.member_id,
+               username,
+               picture
+        from post p
+                 join member m on m.member_id = p.member_id
+        where post_id = #{postId};
+    </select>
+
+    <select id="countBy" parameterType="String" resultType="Long">
+        select count(*)
+        from post
+        <if test="keyword != null">
+            where title like '%${keyword}%' or content_md like '%${keyword}%'
+        </if>
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="post_id" keyProperty="postId" parameterType="kr.dklog.dto.request.RequestPostDto">
+        insert into post (post_id, title, content_md, content_html, created_date, member_id)
+        values (null, #{title}, #{contentMd}, #{contentHtml}, #{createdDate}, #{memberId})
+    </insert>
+    
+    <update id="update" parameterType="kr.dklog.dto.request.RequestUpdatePostDto">
+        update post
+        set title = #{title},
+            content_md = #{contentMd},
+            content_html = #{contentHtml},
+            modified_date = #{modifiedDate}
+        where post_id = #{postId}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        delete from post where post_id = #{post_id}
+    </delete>
+</mapper>

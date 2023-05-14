@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.MemberMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="member_id" keyProperty="memberId" parameterType="kr.dklog.dto.MemberDto">
+        insert into member(member_id, github_username, username, email, picture, student_id)
+        values (null, #{githubUsername}, #{username}, #{email}, #{picture}, #{studentId})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="kr.dklog.dto.MemberDto">
+        select member_id, github_username, username, email, picture, role, student_id
+        from member
+        where member_id = #{memberId}
+    </select>
+
+    <select id="findByGithubUsername" parameterType="String" resultType="kr.dklog.dto.MemberDto">
+        select member_id, github_username, username, email, picture, role, member_id
+        from member
+        where github_username = #{githubUsername}
+    </select>
+
+    <update id="updateMember" parameterType="kr.dklog.dto.MemberDto">
+        update member
+        set github_username = #{githubUsername},
+            username = #{username},
+            email = #{email},
+            picture = #{picture},
+            role = #{role},
+            student_id = #{studentId}
+        where member_id = #{memberId}
+    </update>
+
+    <select id="findUsernameById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select username
+        from member
+        where member_id = #{memberId}
+    </select>
+
+</mapper>

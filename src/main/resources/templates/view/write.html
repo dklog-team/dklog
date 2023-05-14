@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/write-layout}"
+>
+<th:block layout:fragment="content">
+    <main>
+        <form id="writeForm" method="post" action="/post/upload" class="h-full h-full">
+            <div id="contentContainer" class="w-full flex justify-between">
+                <div class="w-full md:w-1/2 bg-gray-100 h-full">
+                    <div class="p-10 h-full">
+                        <div class="w-full bg-gray-100 mb-10">
+                            <input id="title" type="text" name="title" class="w-full text-4xl font-bold placeholder:text-gray-400 bg-gray-100 focus:outline-0" placeholder="제목을 입력해주세요" th:value="${responsePostDto} ? ${responsePostDto.title} : null" required/>
+                        </div>
+                        <textarea id="content" name="contentMd" class="w-full bg-gray-100 focus:outline-0 resize-none" th:text="${responsePostDto} ? ${responsePostDto.contentMd} : null" onkeyup="printPreview()"></textarea>
+                    </div>
+                </div>
+                <div class="hidden md:block w-1/2 p-10">
+                    <div class="text-5xl font-bold w-full mb-10">
+                        <h1 id="previewTitle"></h1>
+                    </div>
+                    <div id="previewScroll" class="overflow-x-hidden h-full">
+                        <div id="previewContent" class="prose min-w-full prose-pre:bg-[#262626] prose-pre:text-gray-300 prose-a:underline-offset-2 prose-a:decoration-yellow-400 prose-mark:text-yellow-400"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="btnContainer" class="w-full md:w-1/2 px-10 py-5 bg-gray-200 inset-x-0 bottom-0 flex justify-between items-center">
+                <label id="btn-image-upload" for="upload-image" class="transition p-1 flex items-center text-gray-700 gap-x-2 rounded-md cursor-pointer hover:bg-gray-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                    <span>사진첨부</span>
+                </label>
+                <input type="file" id="upload-image" style="display: none" accept="image/*"/>
+                <div class="flex items-center gap-x-4">
+                    <!-- The button to open modal -->
+                    <label for="previewModal" class="btn btn-ghost btn-sm flex md:hidden">미리보기</label>
+
+                    <!-- Put this part before </body> tag -->
+                    <input type="checkbox" id="previewModal" class="modal-toggle" />
+                    <div class="modal">
+                        <div class="modal-box relative">
+                            <label for="previewModal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+                            <div class="block md:hidden w-full p-1">
+                                <div class="text-5xl font-bold w-full mb-10">
+                                    <h1 id="previewTitleModal"></h1>
+                                </div>
+                                <div id="previewContentModal" class="prose min-w-full prose-pre:bg-[#262626] prose-pre:text-gray-300 prose-a:underline-offset-2 prose-a:decoration-yellow-400 prose-mark:text-yellow-400"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="resetBtn" class="btn btn-sm bg-black text-white border-none">취소</button>
+                    <button th:unless="${responsePostDto}" id="submitBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none">저장</button>
+                    <button th:if="${responsePostDto}" id="updateBtn" class="btn btn-sm btn-primary bg-yellow-400 text-black border-none">수정</button>
+                </div>
+            </div>
+        </form>
+    </main>
+    <script th:inline="javascript">
+        const html = document.getElementsByTagName('html')[0];
+        const body = document.getElementsByTagName('body')[0];
+        const main = document.getElementsByTagName('main')[0];
+
+        html.style.height = '100%';
+        body.style.height = '100%';
+        main.style.height = '100%';
+
+        let contentContainer = document.getElementById('contentContainer');
+        contentContainer.classList.add('content-h-full');
+
+        let content = document.getElementById('content');
+        content.focus()
+
+        content.classList.add('textarea-h-full');
+
+        let title = document.getElementById('title');
+        title.addEventListener('keyup', (e) => {
+            let previewTitle = document.getElementById('previewTitle');
+            previewTitle.textContent = e.target.value;
+        })
+
+        title.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+
+        let previewContent = document.getElementById('previewContent');
+        let previewScroll = document.getElementById('previewScroll');
+
+        const md = window.markdownit();
+
+        /* markdown it option 설정 */
+        let defaults = {
+            html: false,
+            xhtmlOut: false,
+            breaks: false,
+            langPrefix: 'language-',
+            linkify: true,
+            typographer: true,
+            _highlight: true,
+            _strict: false,
+            _view: 'html',
+        };
+
+        /* option 중 highlight 적용 설정 */
+        defaults.highlight = function (str, lang) {
+            let esc = md.utils.escapeHtml;
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    let highlight = hljs.highlight(lang, str, true)
+                    return '<pre class="hljs"><code>' + highlight.value + '</code></pre>';
+                } catch (__){ }
+            }else {
+                return '<pre class="hljs"><code>' + esc(str) + '</code></pre>';
+            }
+        };
+
+        md.set(defaults);
+
+        /* markdown it plugins */
+        const emoji = window.markdownitEmoji;
+        const mark = window.markdownitMark;
+        const footnote = window.markdownitFootnote;
+        const sub = window.markdownitSub;
+        const sup = window.markdownitSup;
+        const ins = window.markdownitIns;
+        const defList = window.markdownitDeflist;
+        const abbr = window.markdownitAbbr;
+
+        md.use(emoji);
+        md.use(mark);
+        md.use(footnote);
+        md.use(sub);
+        md.use(sup);
+        md.use(ins);
+        md.use(defList);
+        md.use(abbr);
+
+        /* 미리보기 영역에 렌더링하여 출력 */
+        function printPreview() {
+            const contentValue = content.value;
+            previewContent.innerHTML = md.render(contentValue);
+            Array.prototype.forEach.call(previewContent.getElementsByTagName('code'), (code) => {
+                // console.log(code.parentElement.tagName)
+                if (code.parentElement.tagName !== 'PRE') {
+                    code.classList.add('inline-code')
+                }
+            })
+
+            let previewContentModal = document.getElementById('previewContentModal');
+            let previewTitleModal = document.getElementById('previewTitleModal');
+
+            previewContentModal.innerHTML = previewContent.innerHTML;
+            previewTitleModal.textContent = document.getElementById('title').value;
+
+            // Array.prototype.forEach.call(previewContent.getElementsByTagName('code'), (code) => {
+            //     // console.log(code.parentElement.tagName)
+            //     if (code.parentElement.tagName !== 'PRE') {
+            //         code.classList.add('inline-code')
+            //     }
+            // })
+        }
+
+        window.GV = {
+            sync1: null,
+            sync2: null
+        }
+
+        /* 본문 작성 영역 스크롤 event : preview 영역 함께 이동 */
+        content.addEventListener('scroll', function (){
+            if(GV.sync1 && GV.sync1.id != this.id){
+                return false;
+            }
+            let contentScrollHeight = content.scrollHeight - content.clientHeight;
+            let previewScrollHeight = previewScroll.scrollHeight - previewScroll.clientHeight;
+
+            let contentScrollTop = this.scrollTop;
+            let previewScrollTop = contentScrollTop / contentScrollHeight * previewScrollHeight;
+            previewScroll.scrollTop = previewScrollTop;
+
+            GV.sync1 = this;
+            if(GV.sync2){
+                clearTimeout(GV.sync2);
+            }
+            GV.sync2 = setTimeout(function () {
+                GV.sync1 = null;
+                GV.sync2 = null;
+            }, 500);
+        })
+
+        /* preview 영역 스크롤 event : 본문 영역 함께 이동 */
+        previewScroll.addEventListener('scroll', function (){
+            if(GV.sync1 && GV.sync1.id != this.id){
+                return false;
+            }
+            let contentScrollHeight = content.scrollHeight - content.clientHeight;
+            let previewScrollHeight = previewScroll.scrollHeight - previewScroll.clientHeight;
+
+            let previewScrollTop = this.scrollTop;
+            let contentScrollTop = previewScrollTop / previewScrollHeight * contentScrollHeight;
+            content.scrollTop = contentScrollTop;
+
+            GV.sync1 = this;
+            if(GV.sync2){
+                clearTimeout(GV.sync2);
+            }
+            GV.sync2 = setTimeout(function () {
+                GV.sync1 = null;
+                GV.sync2 = null;
+            }, 500);
+        })
+
+        function appendContentHtmlToForm(writeForm) {
+            let inputContentHtml = document.createElement('input');
+            inputContentHtml.type = 'hidden';
+            inputContentHtml.name = 'contentHtml';
+            inputContentHtml.value = previewContent.innerHTML;
+            writeForm.appendChild(inputContentHtml);
+        }
+
+        function validateForm(writeForm) {
+            if (writeForm.title.value === '') {
+                writeForm.title.focus();
+                return false;
+            } else {
+                history.replaceState(null, null, '/');
+                window.onpopstate = function() {
+                    history.go(1);
+                }
+                appendContentHtmlToForm(writeForm);
+                writeForm.submit();
+            }
+        }
+
+        [# th:if = "${responsePostDto} == null" ]
+        document.getElementById('submitBtn').addEventListener('click', function (){
+            let writeForm = document.getElementById('writeForm');
+            validateForm(writeForm);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            location.replace('/');
+        });
+        [/]
+
+        [# th:if= "${responsePostDto}" ]
+        onload = function () {
+            let title = document.getElementById('title');
+            let previewTitle = document.getElementById('previewTitle');
+            previewTitle.innerHTML = title.value;
+            if (content.value !== null) {
+                printPreview();
+            }
+        };
+
+        document.getElementById('updateBtn').addEventListener('click', function () {
+            let writeForm = document.getElementById('writeForm');
+            writeForm.action = '/post/update';
+
+            if (writeForm.title.value === '') {
+                writeForm.title.focus();
+                return false;
+            }
+            let inputPostId = document.createElement('input');
+            inputPostId.type = 'hidden';
+            inputPostId.name = 'postId';
+            inputPostId.value = [[${responsePostDto.postId}]];
+
+            writeForm.appendChild(inputPostId);
+
+            validateForm(writeForm);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            location.replace('/post/' + [[${responsePostDto.postId}]]);
+        });
+        [/]
+
+        /*이미지 업로드 관련 이벤트*/
+        const imageUploadBtn = document.getElementById('btn-image-upload');
+        const inputImageUpload = document.getElementById('upload-image');
+
+        // imageUploadBtn.addEventListener('click', (event) => {
+        //     console.log(document.getElementById("content").selectionStart);
+        //     event.preventDefault();
+        //     console.log('after preventDefault');
+        //     inputImageUpload.click();
+        // });
+
+        inputImageUpload.addEventListener('change', (event) => {
+
+            // console.log('file input change');
+
+            const formData = new FormData();
+
+            formData.append('image', event.target.files[0]);
+
+            axios({
+
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Access-Control-Allow-Origin": "*",
+                },
+                url: "/image/upload",
+                method: "POST",
+                data: formData,
+
+            }).then((response) => {
+
+                // console.log(response.data);
+
+                const element = document.getElementById("content");
+
+                let imageURL = response.data;
+                let imageMarkdown = `![image](${imageURL})`;
+
+                // console.log(imageMarkdown);
+
+                let originContent = element.value;
+                let insertPosition = element.selectionStart;
+
+                // console.log(insertPosition);
+
+                let preInsertPosition = originContent.substring(0, insertPosition);
+                let nextInsertPosition = originContent.substring(element.selectionEnd, originContent.length);
+
+                let newContent = preInsertPosition + imageMarkdown + nextInsertPosition;
+                element.value = newContent;
+
+                insertPosition = insertPosition + imageMarkdown.length;
+                element.selectionStart = insertPosition;
+                element.selectionEnd = insertPosition;
+                element.focus();
+
+                // console.log(newContent)
+
+
+                // console.log(insertPosition);
+
+
+                printPreview();
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+            event.target.value = '';
+
+        });
+
+        let previewModal = document.getElementById('previewModal');
+        previewModal.addEventListener('click', () => {
+            // console.log('modal');
+            printPreview();
+        })
+    </script>
+</th:block>
+</html>
