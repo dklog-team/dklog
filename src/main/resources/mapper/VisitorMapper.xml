@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.VisitorMapper">
+    <insert id="save" useGeneratedKeys="true" keyColumn="visitor_id" keyProperty="visitorId" parameterType="kr.dklog.dto.VisitorDto">
+        insert into visitor (visitor_id, ip, os, visited_date)
+        values (null, #{ip}, #{os}, #{visitedDate})
+    </insert>
+</mapper>
