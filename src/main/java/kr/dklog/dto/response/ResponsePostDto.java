@@ -19,6 +19,8 @@ public class ResponsePostDto {
 
     private String contentHtml;
 
+    private Integer views;
+
     private String createdDate;
 
     private String modifiedDate;

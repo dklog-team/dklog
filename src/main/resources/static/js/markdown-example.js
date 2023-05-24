@@ -101,4 +101,4 @@ const markdownExample = '# h1 Heading :wink:\n' +
     '\n' +
     '## 이미지\n' +
     '\n' +
-    '![dklog](http://39.118.47.163:9094/dklog-organization.jpeg)';
+    '![dklog](http://www.dklog.kr:9094/dklog-organization.jpeg)';

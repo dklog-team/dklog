@@ -27,4 +27,6 @@ public interface PostMapper {
     int update(RequestUpdatePostDto requestUpdatePostDto);
 
     int delete(Long postId);
+
+    void updateViews(Long postId);
 }
