@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -38,10 +41,12 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public String postDetail(Model model, @PathVariable Long postId, @LoginMember SessionMember sessionMember) {
+    public String postDetail(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable Long postId, @LoginMember SessionMember sessionMember) {
         if (sessionMember != null) {
             model.addAttribute("member", sessionMember);
         }
+
+        postService.countViews(request, response, postId);
 
         ResponsePostDto responsePostDto = postService.get(postId);
         List<ResponseCommentDto> responseCommentDtoList = commentService.getList(postId);

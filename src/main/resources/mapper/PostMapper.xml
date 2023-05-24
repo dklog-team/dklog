@@ -8,6 +8,7 @@
                title,
                content_md,
                content_html,
+               views,
                created_date,
                modified_date,
                m.member_id,
@@ -33,6 +34,7 @@
                title,
                content_md,
                content_html,
+               views,
                created_date,
                modified_date,
                m.member_id,
@@ -68,4 +70,10 @@
     <delete id="delete" parameterType="Long">
         delete from post where post_id = #{post_id}
     </delete>
+
+    <update id="updateViews" parameterType="Long">
+        update post
+        set views = views + 1
+        where post_id = #{postId}
+    </update>
 </mapper>

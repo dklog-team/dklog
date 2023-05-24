@@ -15,6 +15,9 @@
                         <span class="ml-1 hidden md:inline-block">작성</span>
                         <span th:if="${responsePostDto.modifiedDate}" class="mx-4 hidden md:inline-block">|</span>
                         <span th:if="${responsePostDto.modifiedDate}" th:text="|${responsePostDto.modifiedDate} 수정|" class="hidden md:inline-block">modifiedDate</span>
+                        <span class="hidden md:inline-block mx-4">|</span>
+                        <span class="hidden md:inline-block mr-1">조회수</span>
+                        <span class="hidden md:inline-block" th:text="${responsePostDto.views}">views</span>
                         <span class="mx-4">|</span>
                         <div class="avatar mr-2">
                             <div class="w-6 rounded-full ring-2 ring-gray-300">
