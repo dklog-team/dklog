@@ -19,6 +19,10 @@ public class PreviewPostDto {
 
     private String previewImage;
 
+    private Integer views;
+
+    private Integer commentCount;
+
     private String createdDate;
 
     private String modifiedDate;

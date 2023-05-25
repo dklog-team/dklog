@@ -29,8 +29,9 @@
                     <div class="post-container flex items-center py-10">
                         <img th:if="${post.previewImage != null}" th:src="${post.previewImage}"
                              class="thumbnail-box object-cover w-48 h-48 rounded-lg mr-10 hidden md:inline-block"/>
-<!--                        <div th:if="${post.previewImage == null}" class="w-48 h-48 mr-10 rounded-lg transition duration-300 ease-out hover:-translate-y-2 hover:shadow-lg">-->
-                        <div th:if="${post.previewImage == null}" class="thumbnail-box w-48 h-48 mr-10 rounded-lg hidden md:inline-block">
+                        <!--                        <div th:if="${post.previewImage == null}" class="w-48 h-48 mr-10 rounded-lg transition duration-300 ease-out hover:-translate-y-2 hover:shadow-lg">-->
+                        <div th:if="${post.previewImage == null}"
+                             class="thumbnail-box w-48 h-48 mr-10 rounded-lg hidden md:inline-block">
                             <div th:class="${postStat.index % 2 == 1} ? 'w-48 h-48 bg-[#f9d72f] text-gray-800 text-2xl rounded-lg flex justify-center items-center' : 'w-48 h-48 bg-gray-800 text-[#f9d72f] text-2xl rounded-lg flex justify-center items-center'">
                                 <span class="font-bold">dk</span>
                                 <span class="font-medium">log</span>
@@ -41,15 +42,37 @@
                             <div class="content-preview mb-6">
                                 <p th:text="${post.previewContent}" class="text-gray-700">content</p>
                             </div>
-                            <div class="text-gray-500 flex items-center">
-                                <span th:text="${post.createdDate}">createdDate</span>
-                                <span class="mx-4">|</span>
-                                <div class="avatar mr-2">
-                                    <div class="w-6 rounded-full ring-2 ring-gray-300">
-                                        <img th:src="${post.picture}"/>
+                            <div class="text-gray-500 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span th:text="${post.createdDate}">createdDate</span>
+                                    <span class="mx-4">|</span>
+                                    <div class="avatar mr-2">
+                                        <div class="w-6 rounded-full ring-2 ring-gray-300">
+                                            <img th:src="${post.picture}"/>
+                                        </div>
+                                    </div>
+                                    <span th:text="${post.username}">username</span>
+                                </div>
+                                <div class="flex gap-x-4">
+                                    <div class="flex items-align gap-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                        <span th:text="${post.views}">views</span>
+                                    </div>
+                                    <div class="flex items-align gap-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.466.037.893.281 1.153.671L12 21l2.652-3.978c.26-.39.687-.634 1.153-.67 1.09-.086 2.17-.208 3.238-.365 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/>
+                                        </svg>
+                                        <span th:text="${post.commentCount}">commentCount</span>
                                     </div>
                                 </div>
-                                <span th:text="${post.username}">username</span>
                             </div>
                         </div>
                     </div>

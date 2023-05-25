@@ -8,11 +8,15 @@ import kr.dklog.dto.request.RequestUpdatePostDto;
 import kr.dklog.dto.response.PreviewPostDto;
 import kr.dklog.dto.response.ResponsePostDto;
 import kr.dklog.dto.response.ResponsePostListDto;
+import kr.dklog.mapper.CommentMapper;
 import kr.dklog.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,6 +31,8 @@ public class PostService {
 
     private final PostMapper postMapper;
 
+    private final CommentMapper commentMapper;
+
     public ResponsePostDto get(Long postId) {
         PostDto postDto = postMapper.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글 없음"));
@@ -36,6 +42,7 @@ public class PostService {
         responsePostDto.setTitle(postDto.getTitle());
         responsePostDto.setContentMd(postDto.getContentMd());
         responsePostDto.setContentHtml(postDto.getContentHtml());
+        responsePostDto.setViews(postDto.getViews());
         responsePostDto.setCreatedDate(postDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
         if(postDto.getModifiedDate() != null){
             responsePostDto.setModifiedDate(postDto.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")));
@@ -70,6 +77,8 @@ public class PostService {
             previewPostDto.setTitle(postDto.getTitle());
             previewPostDto.setPreviewContent(previewContent);
             previewPostDto.setPreviewImage(previewImage);
+            previewPostDto.setViews(postDto.getViews());
+            previewPostDto.setCommentCount(commentMapper.countBy(postDto.getPostId()));
             previewPostDto.setCreatedDate(postDto.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")));
             previewPostDto.setMemberId(postDto.getMemberId());
             previewPostDto.setUsername(postDto.getUsername());
@@ -141,5 +150,32 @@ public class PostService {
 
     public void delete(Long postId)  throws Exception{
         postMapper.delete(postId);
+    }
+
+    public void countViews(HttpServletRequest request, HttpServletResponse response, Long postId) {
+        Cookie newCookie = null;
+        Cookie[] nowCookies = request.getCookies();
+        if (nowCookies != null) {
+            for (Cookie cookie : nowCookies) {
+                if (cookie.getName().equals("postView")) {
+                    newCookie = cookie;
+                }
+            }
+        }
+        if (newCookie != null) {
+            if (!newCookie.getValue().contains("[" + postId + "]")) {
+                postMapper.updateViews(postId);
+                newCookie.setValue(newCookie.getValue() + "_[" + postId + "]");
+                newCookie.setPath("/");
+                newCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(newCookie);
+            }
+        } else {
+            postMapper.updateViews(postId);
+            Cookie cookie = new Cookie("postView", "[" + postId + "]");
+            cookie.setPath("/");
+            cookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(cookie);
+        }
     }
 }

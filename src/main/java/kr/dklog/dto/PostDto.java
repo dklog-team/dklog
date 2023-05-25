@@ -15,6 +15,7 @@ public class PostDto {
     private String title;
     private String contentMd;
     private String contentHtml;
+    private Integer views;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private Long memberId;
