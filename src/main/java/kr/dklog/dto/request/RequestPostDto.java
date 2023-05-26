@@ -15,6 +15,7 @@ public class RequestPostDto {
     private String title;
     private String contentMd;
     private String contentHtml;
+    private String contentText;
     private LocalDateTime createdDate;
     private Long memberId;
 
