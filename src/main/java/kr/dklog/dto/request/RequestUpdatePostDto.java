@@ -15,6 +15,7 @@ public class RequestUpdatePostDto {
     private String title;
     private String contentMd;
     private String contentHtml;
+    private String contentText;
     private LocalDateTime modifiedDate;
 
 }

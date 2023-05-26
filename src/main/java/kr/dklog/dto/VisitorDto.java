@@ -17,5 +17,7 @@ public class VisitorDto {
 
     private String os;
 
+    private String requestUrl;
+
     private LocalDateTime visitedDate;
 }
