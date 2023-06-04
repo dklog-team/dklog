@@ -28,10 +28,12 @@ public class VisitorCountInterceptor implements HandlerInterceptor {
             session.setAttribute("visitFlag", true);
             log.info("client ip: {}", getRemoteIP(request));
             log.info("client os: {}", getOs(request.getHeader("User-Agent")));
+            log.info("request uri: {}", request.getRequestURL());
 
             VisitorDto visitorDto = new VisitorDto();
             visitorDto.setIp(getRemoteIP(request));
             visitorDto.setOs(getOs(request.getHeader("User-Agent")));
+            visitorDto.setRequestUrl(String.valueOf(request.getRequestURL()));
             visitorDto.setVisitedDate(LocalDateTime.now());
 
             VisitorDto savedVisitor = visitorService.insert(visitorDto);

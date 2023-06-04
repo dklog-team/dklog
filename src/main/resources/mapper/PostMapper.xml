@@ -54,8 +54,8 @@
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyColumn="post_id" keyProperty="postId" parameterType="kr.dklog.dto.request.RequestPostDto">
-        insert into post (post_id, title, content_md, content_html, created_date, member_id)
-        values (null, #{title}, #{contentMd}, #{contentHtml}, #{createdDate}, #{memberId})
+        insert into post (post_id, title, content_md, content_html, content_text, created_date, member_id)
+        values (null, #{title}, #{contentMd}, #{contentHtml}, #{contentText}, #{createdDate}, #{memberId})
     </insert>
     
     <update id="update" parameterType="kr.dklog.dto.request.RequestUpdatePostDto">
@@ -63,6 +63,7 @@
         set title = #{title},
             content_md = #{contentMd},
             content_html = #{contentHtml},
+            content_text = #{contentText},
             modified_date = #{modifiedDate}
         where post_id = #{postId}
     </update>

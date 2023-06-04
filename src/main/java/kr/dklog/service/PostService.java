@@ -2,8 +2,8 @@ package kr.dklog.service;
 
 import kr.dklog.common.util.PagingUtil;
 import kr.dklog.dto.PostDto;
-import kr.dklog.dto.request.RequestPostDto;
 import kr.dklog.dto.common.RequestListDto;
+import kr.dklog.dto.request.RequestPostDto;
 import kr.dklog.dto.request.RequestUpdatePostDto;
 import kr.dklog.dto.response.PreviewPostDto;
 import kr.dklog.dto.response.ResponsePostDto;
@@ -68,7 +68,7 @@ public class PostService {
         List<PreviewPostDto> previewPostDtoList = postDtoList.stream().map((postDto -> {
             // getPreviewContent
             String contentHtml = postDto.getContentHtml();
-            String previewContent = getPreviewContent(contentHtml);
+            String previewContent = getTextContent(contentHtml);
             // getImage
             String previewImage = getPreviewImage(contentHtml);
 
@@ -105,7 +105,7 @@ public class PostService {
 
     }
 
-    private String getPreviewContent(String contentHtml) {
+    private String getTextContent(String contentHtml) {
         String result = contentHtml
                 .replaceAll("<(/)?([a-zA-Z0-9]*)(\\s[a-zA-Z0-9]*=[^>]*)?(\\s)*(/)?>", "")
                 .replaceAll("-&gt;", "")
@@ -128,6 +128,7 @@ public class PostService {
 
     public boolean write(RequestPostDto requestPostDto) {
         requestPostDto.setCreatedDate(LocalDateTime.now());
+        requestPostDto.setContentText(getTextContent(requestPostDto.getContentHtml()));
 
         int result = postMapper.save(requestPostDto);
         if (result == 1) {
@@ -139,6 +140,7 @@ public class PostService {
 
     public boolean modify(RequestUpdatePostDto requestUpdatePostDto) {
         requestUpdatePostDto.setModifiedDate(LocalDateTime.now());
+        requestUpdatePostDto.setContentText(getTextContent(requestUpdatePostDto.getContentHtml()));
 
         int result = postMapper.update(requestUpdatePostDto);
         if (result == 1) {

@@ -4,9 +4,11 @@ import kr.dklog.common.exception.AlreadyAuthStudentException;
 import kr.dklog.common.exception.NotMatchAuthCodeException;
 import kr.dklog.common.exception.StudentNotFoundException;
 import kr.dklog.common.util.NcpSmsUtil;
+import kr.dklog.dto.SmsSendResponseDto;
 import kr.dklog.dto.StudentDto;
 import kr.dklog.dto.request.RequestAuthCodeDto;
 import kr.dklog.dto.response.ResponseAuthResultDto;
+import kr.dklog.mapper.SmsSendResponseMapper;
 import kr.dklog.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class AuthCodeService {
 
     private final HttpSession httpSession;
 
+    private final SmsSendResponseMapper smsSendResponseMapper;
+
     public ResponseAuthResultDto sendAuthCode(RequestAuthCodeDto requestDto) {
 
         studentMapper.findByName(requestDto.getName())
@@ -45,6 +49,15 @@ public class AuthCodeService {
         ResponseAuthResultDto responseDto = null;
         try {
             Map<String, Object> response = ncpSmsUtil.sendSms(studentDto);
+
+            SmsSendResponseDto smsSendResponseDto = new SmsSendResponseDto();
+            smsSendResponseDto.setRequestId((String) response.get("requestId"));
+            smsSendResponseDto.setRequestTime((String) response.get("requestTime"));
+            smsSendResponseDto.setStatusCode((String) response.get("statusCode"));
+            smsSendResponseDto.setStatusName((String) response.get("statusName"));
+
+            smsSendResponseMapper.save(smsSendResponseDto);
+
             if (response.get("statusCode").equals("202")) {
                 responseDto = new ResponseAuthResultDto(studentDto.getStudentId(), "인증번호를 전송했습니다.");
             } else {
