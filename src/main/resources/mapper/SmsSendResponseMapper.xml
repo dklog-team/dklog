@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dklog.mapper.SmsSendResponseMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="sms_send_response_id" keyProperty="smsSendResponseId" parameterType="kr.dklog.dto.request.RequestPostDto">
+        insert into sms_send_response(sms_send_response_id, request_id, request_time, status_code, status_name)
+        values (null, #{requestId}, #{requestTime}, #{statusCode}, #{statusName});
+    </insert>
+
+</mapper>
