@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/write-layout}"
+>
+<th:block layout:fragment="content">
+    <script>
+        AOS.init();
+    </script>
+    <main class="mx-auto max-w-6xl py-32">
+        <div class="flex gap-x-1" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
+                <span class="font-bold text-6xl align-middle bg-secondary rounded-md px-1 py-0.5">dk</span>
+                <span class="font-semibold text-6xl align-middle">log Apps</span>
+        </div>
+        <div class="flex gap-x-4 mt-20">
+            <div class="w-1/2 border-r pr-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <div class="w-full flex gap-x-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                    <div class="w-full">
+                        <h2 class="text-3xl font-semibold">dklog blog</h2>
+                        <div class="mt-6">
+                            <p class="text-gray-700 text-lg">dktechin 부트캠프 교육생들의 기술 블로그 서비스</p>
+                        </div>
+                        <div class="mt-8">
+                            <div class="flex items-center gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p>github 소셜 로그인으로 활동</p>
+                            </div>
+                            <div class="flex items-center mt-4 gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p>마크다운을 사용한 심플한 블로그</p>
+                            </div>
+                            <div class="flex items-center mt-4 gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p>dktechin 부트캠프 교육생들의 기술적인 커뮤니티 형성</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <button id="dklogBtn" class="btn btn-secondary">Get Started</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 pl-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                <div class="w-full flex gap-x-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <div class="w-full">
+                        <h2 class="text-3xl font-semibold">dklog admin</h2>
+                        <div class="mt-6">
+                            <p class="text-gray-700 text-lg">dklog 블로그 서비스의 관리자 페이지</p>
+                        </div>
+                        <div class="mt-8">
+                            <div class="flex items-center gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p>토큰 방식 로그인</p>
+                            </div>
+                            <div class="flex items-center mt-4 gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p>사이트 방문자, 미인증 교육생 통계 확인</p>
+                            </div>
+                            <div class="flex items-center mt-4 gap-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p>dklog 블로그 서비스의 관리(교육생, 게시글, 댓글, 이미지, SMS)</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <button id="dklogAdminBtn" class="btn btn-accent text-[#f9d729]">Get Started</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-x-4 mt-20">
+            <div class="w-1/2 border-r pr-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                <h1 class="text-3xl font-semibold">Skills</h1>
+                <h2 class="mt-6 text-lg font-semibold">Frond end</h2>
+                <div class="flex items-center mt-4 gap-x-4">
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/thymeleaf.png}"/>
+                        <p class="text-center mt-2">Thymeleaf</p>
+                    </div>
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/tailwind.png}"/>
+                        <p class="text-center mt-2">tailwindcss</p>
+                    </div>
+                </div>
+                <h2 class="mt-6 text-lg font-semibold">Back end</h2>
+                <div class="flex items-center mt-4 gap-x-4">
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/springboot.png}"/>
+                        <p class="text-center mt-2">Spring Boot</p>
+                    </div>
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/mybatis.png}"/>
+                        <p class="text-center mt-2">MyBatis</p>
+                    </div>
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/mysql.png}"/>
+                        <p class="text-center mt-2">MySQL</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 pl-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                <h1 class="text-3xl font-semibold">Skills</h1>
+                <h2 class="mt-6 text-lg font-semibold">Front end</h2>
+                <div class="flex items-center mt-4 gap-x-4">
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/vue.png}"/>
+                        <p class="text-center mt-2">Vue3</p>
+                    </div>
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/tailwind.png}"/>
+                        <p class="text-center mt-2">tailwindcss</p>
+                    </div>
+                </div>
+                <h2 class="mt-6 text-lg font-semibold">Back end</h2>
+                <div class="flex items-center mt-4 gap-x-4">
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/springboot.png}"/>
+                        <p class="text-center mt-2">Spring Boot</p>
+                    </div>
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/jpa.png}"/>
+                        <p class="text-center mt-2">JPA</p>
+                    </div>
+                    <div class="w-1/4 border rounded-lg px-5 py-3">
+                        <img th:src="@{/images/mysql.png}"/>
+                        <p class="text-center mt-2">MySQL</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script th:inline="javascript">
+        let dklogBtn = document.getElementById("dklogBtn");
+        let dklogAdminBtn = document.getElementById("dklogAdminBtn");
+
+        dklogBtn.addEventListener('click', () => {
+            location.href = "/posts";
+        })
+
+        dklogAdminBtn.addEventListener('click', () => {
+            location.href = "http://admin.dklog.kr";
+        })
+    </script>
+</th:block>
+</html>
