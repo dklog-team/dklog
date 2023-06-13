@@ -20,6 +20,11 @@ public class HomeController {
     private final PostService postService;
 
     @GetMapping("/")
+    public String navigation() {
+        return "view/navigation";
+    }
+
+    @GetMapping("/posts")
     public String home(Model model, @LoginMember SessionMember sessionMember, @ModelAttribute RequestListDto requestListDto) {
         if (sessionMember != null) {
             model.addAttribute("member", sessionMember);

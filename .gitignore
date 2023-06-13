@@ -44,3 +44,9 @@ application.pid
 
 ### oauth2
 application-oauth.yml
+
+### production config
+resources-env
+
+### dockerfile
+Dockerfile
