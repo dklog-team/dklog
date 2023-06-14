@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr'
-version = '20230604-01'
+version = '20230612-01'
 sourceCompatibility = '11'
 
 configurations {
@@ -28,6 +28,8 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.jcraft:jsch:0.1.55'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -38,4 +40,15 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
+
+// 리소스 디렉토리 추가
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources-env/${profile}"
+        }
+    }
 }
